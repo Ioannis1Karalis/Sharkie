@@ -2,7 +2,7 @@ class Character extends MovableObject{
 
     height = 300;
     width = 250;
-    y = 10;
+    y = 40;
     x = 10;
     speed = 10;
     IMAGES_SWIMMING = [
@@ -25,35 +25,32 @@ class Character extends MovableObject{
     animate() {
 
         setInterval(() => {
-            if(this.world.keyboard.RIGHT) {
+            if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.x += this.speed;
                 this.otherDirection = false;
             }
 
-            if(this.world.keyboard.LEFT) {
+            if(this.world.keyboard.LEFT && this.x > 0) {
                 this.x -= this.speed;
                 this.otherDirection = true;
             }
 
-            if(this.world.keyboard.UP) {
+            if(this.world.keyboard.UP && this.y > -130) {
                 this.y -= this.speed;
             }
 
-            if(this.world.keyboard.DOWN) {
+            if(this.world.keyboard.DOWN && this.y < 180) {
                 this.y += this.speed;
             }
-            this.world.camera_x = -this.x;
+            this.world.camera_x = -this.x + 80;
         }, 1000 / 60); 
 
 
         setInterval(() => {
 
             if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
-
-                let i = this.currentImage % this.IMAGES_SWIMMING.length; // let i = 0 % 6; 0, => Rest 0 // i = 0, 1, 2, 3, 4, 5, 6,... 0, 1, 2  
-                let path = this.IMAGES_SWIMMING[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+                
+                this.playAnimation(this.IMAGES_SWIMMING);
             }
         }, 100)
     }

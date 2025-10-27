@@ -1,10 +1,10 @@
 class World {
     character = new Character();
-    enemies = level1.enemies;
+    level = level1;
+
     //light = [
     //    new Light()
     //];
-    backgroundObjects = level1.backgroundObjects;
     canvas;
     ctx;
     keyboard;
@@ -27,14 +27,13 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectsToMap(this.backgroundObjects);
+        this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.level.enemies);
         //this.addObjectsToMap(this.light);
 
         this.ctx.translate(-this.camera_x, 0);
  
-
         // draw() wird immer wieder aufgerufen 
         let self = this; 
         requestAnimationFrame(function() {
