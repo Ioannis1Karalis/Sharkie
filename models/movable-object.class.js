@@ -8,6 +8,7 @@ class MovableObject {
     currentImage = 0; 
     speed = 0.15;
     otherDirection = false;
+    energy = 100; 
 
     loadImage(path) {
         this.img = new Image(); 
@@ -29,12 +30,20 @@ class MovableObject {
     drawFrame(ctx) {
 
         if(this instanceof Character || this instanceof Fish){
-        ctx.beginPath();
-        ctx.lineWidth = '5';
-        ctx.strokeStyle = 'red';
-        ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.stroke();
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'red';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
         }
+    }
+
+    // character.isColliding(fish);
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x + mo.width &&
+            this.y < mo.y + mo.height;
     }
 
     playAnimation(images) {
