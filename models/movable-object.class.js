@@ -46,6 +46,18 @@ class MovableObject {
             this.y < mo.y + mo.height;
     }
 
+    hit() {
+        this.energy -= 5;
+        if(this.energy < 0) {
+            this.energy = 0;
+        }
+    }
+
+    isDead() {
+        return this.energy == 0;
+        
+    }
+
     playAnimation(images) {
         let i = this.currentImage % this.IMAGES_SWIMMING.length; // let i = 0 % 6; 0, => Rest 0 // i = 0, 1, 2, 3, 4, 5, 6,... 0, 1, 2  
         let path = images[i];
