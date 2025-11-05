@@ -9,6 +9,7 @@ class MovableObject {
     speed = 0.15;
     otherDirection = false;
     energy = 100; 
+    lastHit = 0; 
 
     loadImage(path) {
         this.img = new Image(); 
@@ -50,7 +51,15 @@ class MovableObject {
         this.energy -= 5;
         if(this.energy < 0) {
             this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
         }
+    }
+
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit; // Difference in ms 
+        timepassed = timepassed / 1000; // Difference in s
+        return timepassed < 0.6;
     }
 
     isDead() {
@@ -59,7 +68,7 @@ class MovableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % this.IMAGES_SWIMMING.length; // let i = 0 % 6; 0, => Rest 0 // i = 0, 1, 2, 3, 4, 5, 6,... 0, 1, 2  
+        let i = this.currentImage % images.length; // let i = 0 % 6; 0, => Rest 0 // i = 0, 1, 2, 3, 4, 5, 6,... 0, 1, 2  
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;

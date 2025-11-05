@@ -29,6 +29,20 @@ class Character extends MovableObject{
         'img/2.Sharkie/6.dead/1.Poisoned/12.png'
     ];
 
+    IMAGES_POISONED = [
+        'img/2.Sharkie/5.Hurt/1.Poisoned/1.png',
+        'img/2.Sharkie/5.Hurt/1.Poisoned/2.png',
+        'img/2.Sharkie/5.Hurt/1.Poisoned/3.png',
+        'img/2.Sharkie/5.Hurt/1.Poisoned/4.png',
+        'img/2.Sharkie/5.Hurt/1.Poisoned/5.png'
+    ];
+
+    IMAGES_ELECTRIC_SHOCK = [
+        'img/2.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/2.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/2.Sharkie/5.Hurt/2.Electric shock/3.png'
+    ];
+
 
     world;
 
@@ -36,6 +50,8 @@ class Character extends MovableObject{
         super().loadImage('img/2.Sharkie/1.IDLE/1.png');
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_POISONED);
+        this.loadImages(this.IMAGES_ELECTRIC_SHOCK);
 
         this.animate();
     }
@@ -68,8 +84,11 @@ class Character extends MovableObject{
 
             if(this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-            }
-            else {
+            } else if (this.isHurt()){
+                this.playAnimation(this.IMAGES_POISONED);
+            } else if (this.isHurt()){
+                this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
+            } else {
                 if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN) {
                     
                     this.playAnimation(this.IMAGES_SWIMMING);
