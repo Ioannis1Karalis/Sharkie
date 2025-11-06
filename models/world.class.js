@@ -7,6 +7,7 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [new ThrowableObject()];
+    barrier = new Barrier();
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -37,6 +38,7 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
+        this.addToMap(this.barrier);
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
