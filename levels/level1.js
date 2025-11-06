@@ -3,6 +3,9 @@ const level1 = new Level(
     new Fish(),
     new Fish(),
     new Fish(),
+    new JellyFish(850, 200),   // Erste Qualle
+    new JellyFish(2100, 200),  // Zweite Qualle
+    new JellyFish(2700, 200), 
     new Endboss()
     ],
 
