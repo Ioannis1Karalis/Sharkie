@@ -6,6 +6,8 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar = new StatusBar();
+    coinsBar = new CoinsBar();
+    poisonBar = new PoisonBar();
     throwableObjects = [new ThrowableObject()];
     barrier = new Barrier();
 
@@ -42,6 +44,8 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
+        this.addToMap(this.coinsBar);
+        this.addToMap(this.poisonBar);
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);

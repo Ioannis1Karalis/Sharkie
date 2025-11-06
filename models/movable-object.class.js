@@ -29,7 +29,6 @@ class MovableObject extends DrawbleObject {
 
     isDead() {
         return this.energy == 0;
-        
     }
 
     playAnimation(images) {
