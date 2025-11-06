@@ -142,10 +142,10 @@ class Character extends MovableObject{
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
         
-            } else if (this.isHurt() && this.isPoisoned) {
+            } else if (this.isHurt() || this.isPoisoned) {
                 this.playAnimation(this.IMAGES_POISONED);
         
-            } else if (this.isHurt() && this.isElectrocuted) {
+            } else if (this.isHurt() || this.isElectrocuted) {
                 this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
         
             } else if (moving) {
