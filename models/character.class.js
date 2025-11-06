@@ -37,12 +37,11 @@ class Character extends MovableObject{
         'img/2.Sharkie/5.Hurt/1.Poisoned/5.png'
     ];
 
-    IMAGES_ELECTRIC_SHOCK = [
+    IMAGES_ELECTRIC_SHOCK = [ // muss noch eingebaut werden - mit Quallen Kollision 
         'img/2.Sharkie/5.Hurt/2.Electric shock/1.png',
         'img/2.Sharkie/5.Hurt/2.Electric shock/2.png',
         'img/2.Sharkie/5.Hurt/2.Electric shock/3.png'
     ];
-
 
     world;
 
