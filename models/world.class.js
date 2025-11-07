@@ -43,9 +43,9 @@ class World {
         this.addToMap(this.barrier);
 
         this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.poisonBar);
         this.addToMap(this.statusBar);
         this.addToMap(this.coinsBar);
-        this.addToMap(this.poisonBar);
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);
