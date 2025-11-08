@@ -32,8 +32,15 @@ class Fish extends MovableObject {
         this.loadImages(this.IMAGES_TRANSITION);
         this.loadImages(this.IMAGES_BUBBLE);
 
-        this.x = x || 250 + Math.random() * 500;
-        this.y = y || 100 + Math.random() * 200;
+        this.offset = {
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 5
+        };
+
+        this.x = x || 550 + Math.random() * 500;
+        this.y = y || 150 + Math.random() * 200;
         this.speed = 0.15 + Math.random() * 0.45;
 
         this.mode = "normal"; 

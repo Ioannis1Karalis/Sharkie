@@ -1,7 +1,7 @@
 class Barrier extends MovableObject {
 
     width = 780;
-    height = 420;
+    height = 520;
     x = 1000;
     y = 0;
 

@@ -6,10 +6,12 @@ class MovableObject extends DrawbleObject {
 
     // character.isColliding(fish);
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x + mo.width &&
-            this.y < mo.y + mo.height;
+        return (
+            this.x + this.width - this.offset.right > mo.x + (mo.offset ? mo.offset.left : 0) &&
+            this.x + this.offset.left < mo.x + mo.width - (mo.offset ? mo.offset.right : 0) &&
+            this.y + this.height - this.offset.bottom > mo.y + (mo.offset ? mo.offset.top : 0) &&
+            this.y + this.offset.top < mo.y + mo.height - (mo.offset ? mo.offset.bottom : 0)
+        );
     }
 
     hit() {

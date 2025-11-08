@@ -96,6 +96,13 @@ class Character extends MovableObject{
         this.loadImages(this.IMAGES_ELECTRIC_SHOCK);
 
         this.animate();
+
+        this.offset = {
+            top: 140,
+            left: 50,
+            right: 50,
+            bottom: 70
+        };
     }
 
     animate() {
@@ -120,7 +127,7 @@ class Character extends MovableObject{
                 moving = true;
             }
 
-            if (this.world.keyboard.DOWN && this.y < 130) {
+            if (this.world.keyboard.DOWN && this.y < 250) {
                 this.y += this.speed;
                 moving = true;
             }

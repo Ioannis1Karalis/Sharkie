@@ -5,7 +5,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();
+    healthBar = new HealthBar();
     coinsBar = new CoinsBar();
     poisonBar = new PoisonBar();
     throwableObjects = [new ThrowableObject()];
@@ -29,7 +29,7 @@ class World {
             this.level.enemies.forEach( (enemy) => {
                 if (this.character.isColliding(enemy) ) {
                     this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy);
+                    this.healthBar.setPercentage(this.character.energy);
                 }
             });
         }, 200);
@@ -44,7 +44,7 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.poisonBar);
-        this.addToMap(this.statusBar);
+        this.addToMap(this.healthBar);
         this.addToMap(this.coinsBar);
         this.ctx.translate(this.camera_x, 0);
 

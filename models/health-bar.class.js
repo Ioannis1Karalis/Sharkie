@@ -1,4 +1,4 @@
-class StatusBar extends DrawbleObject {
+class HealthBar extends DrawbleObject {
 
     IMAGES = [
         'img/5.Marcadores/green/Life/0_  copia 3.png',
