@@ -19,7 +19,8 @@ class DrawbleObject {
     drawFrame(ctx) {
         if (
             this instanceof Character ||
-            this instanceof Fish ||
+            this instanceof PufferFishRed ||
+            this instanceof PufferFishGreen ||
             this instanceof JellyFish ||
             this instanceof Endboss
         ) {

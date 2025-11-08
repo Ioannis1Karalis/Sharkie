@@ -1,11 +1,16 @@
 const level1 = new Level(
     [   
-    new Fish(),
-    new Fish(),
-    new Fish(),
-    new JellyFish(850, 200),   // Erste Qualle
-    new JellyFish(2100, 200),  // Zweite Qualle
-    new JellyFish(2700, 200), 
+    new PufferFishRed(),
+    new PufferFishGreen(),
+    new PufferFishRed(550, 150),
+    new PufferFishGreen(2150, 250),
+    new PufferFishRed(1750, 200),
+    new PufferFishRed(2850, 100),
+    new PufferFishGreen(2850, 200),
+    new PufferFishRed(2850, 300),
+    new JellyFish(850, 200),
+    new JellyFish(2100, 200),
+    new JellyFish(2900, 200), 
     new Endboss()
     ],
 
