@@ -10,6 +10,7 @@ class World {
     poisonBar = new PoisonBar();
     bubbleAttack = [new BubbleAttack()];
     barrier = new Barrier();
+    
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -40,19 +41,41 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach( (enemy) => {
-            if (this.character.isColliding(enemy) ) {
-                this.character.hit();
-                this.healthBar.setPercentage(this.character.energy);
+        this.level.enemies.forEach((enemy) => {
+          if (!this.character.isColliding(enemy)) return;
+      
+          if (Date.now() - this.character.lastHit < 600) return;
+      
+          if (enemy instanceof JellyFish) {
+            if (enemy.isDangerous) {
+              this.character.isElectrocuted = true;
+              this.character.isPoisoned = false; 
+              setTimeout(() => { this.character.isElectrocuted = false; }, 800);
+            } else {
+              this.character.isPoisoned = true;
+              setTimeout(() => { this.character.isPoisoned = false; }, 800);
             }
+          }
+      
+          if (enemy instanceof PufferFishGreen || enemy instanceof PufferFishRed) {
+            if (enemy.mode === 'bubble' || enemy.mode === 'transition') {
+              this.character.isPoisoned = true;
+              this.character.isElectrocuted = false;
+              setTimeout(() => { this.character.isPoisoned = false; }, 800);
+            }
+          }
+      
+          this.character.hit();
+          this.healthBar.setPercentage(this.character.energy);
         });
-     
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.coins);
+
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.barrier);
 
@@ -74,11 +97,10 @@ class World {
             self.draw();
         });
     }
-
+    
     addObjectsToMap(objects) {
-        objects.forEach(o => {
-            this.addToMap(o);
-        })
+        if (!objects || !objects.forEach) return;
+        objects.forEach(o => this.addToMap(o));
     }
 
     addToMap(mo) {

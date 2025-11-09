@@ -108,7 +108,7 @@ class Character extends MovableObject{
 
     world;
 
-    constructor(){
+    constructor() {
         super().loadImage('img/2.Sharkie/1.IDLE/1.png');
         this.loadImages(this.IMAGES_REGULAR);
         this.loadImages(this.IMAGES_SWIMMING);
@@ -117,14 +117,12 @@ class Character extends MovableObject{
         this.loadImages(this.IMAGES_POISONED);
         this.loadImages(this.IMAGES_ELECTRIC_SHOCK);
 
+        this.isElectrocuted = false;
+        this.isPoisoned = false;
+
         this.animate();
 
-        this.offset = {
-            top: 140,
-            left: 50,
-            right: 50,
-            bottom: 70
-        };
+        this.offset = { top:140, left:50, right:50, bottom:70 };
     }
 
     animate() {
@@ -167,28 +165,28 @@ class Character extends MovableObject{
 
         setInterval(() => {
             const moving = this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN;
-        
+          
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-        
-            } else if (this.isHurt() || this.isPoisoned) {
-                this.playAnimation(this.IMAGES_POISONED);
-        
-            } else if (this.isHurt() || this.isElectrocuted) {
-                this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
-        
+              this.playAnimation(this.IMAGES_DEAD);
+          
+            } else if (this.isElectrocuted) {              // ← zuerst Schock
+              this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
+          
+            } else if (this.isPoisoned || this.isHurt()) { // ← dann Hurt/Poison
+              this.playAnimation(this.IMAGES_POISONED);
+          
             } else if (moving) {
-                this.playAnimation(this.IMAGES_SWIMMING);
-                this.idleTime = 0;
-                this.hasFallenAsleep = false; 
-        
+              this.playAnimation(this.IMAGES_SWIMMING);
+              this.idleTime = 0;
+              this.hasFallenAsleep = false;
+          
             } else if (this.idleTime > this.sleepThreshold) {
-                this.playSleepingAnimation(); 
-        
+              this.playSleepingAnimation();
+          
             } else {
-                this.playAnimation(this.IMAGES_REGULAR);
+              this.playAnimation(this.IMAGES_REGULAR);
             }
-        }, 120);
+          }, 120);
     }
 
     playSleepingAnimation() {

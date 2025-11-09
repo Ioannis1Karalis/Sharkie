@@ -38,6 +38,7 @@ class PufferFishGreen extends MovableObject {
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_TRANSITION);
         this.loadImages(this.IMAGES_BUBBLE);
+        this.loadImages(this.IMAGES_DEAD);
 
         this.offset = {
             top: 0,
