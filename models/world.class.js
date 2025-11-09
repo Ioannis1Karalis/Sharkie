@@ -8,7 +8,7 @@ class World {
     healthBar = new HealthBar();
     coinsBar = new CoinsBar();
     poisonBar = new PoisonBar();
-    throwableObjects = [new ThrowableObject()];
+    bubbleAttack = [new BubbleAttack()];
     barrier = new Barrier();
 
     constructor(canvas, keyboard){
@@ -17,22 +17,36 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.swim();
     }
 
     setWorld() {
         this.character.world = this; 
     }
 
-    checkCollisions() {
+    swim() {
         setInterval(() => {
-            this.level.enemies.forEach( (enemy) => {
-                if (this.character.isColliding(enemy) ) {
-                    this.character.hit();
-                    this.healthBar.setPercentage(this.character.energy);
-                }
-            });
-        }, 200);
+            this.checkCollisions();
+            this.checkThrowableObjects();
+        }, 200)
+
+    }
+
+    checkThrowableObjects() {
+        if(this.keyboard.D) {
+            let bubbleAttack = new BubbleAttack(this.character.x, this.character.y + 100)
+            this.bubbleAttack.push(bubbleAttack);
+        }
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach( (enemy) => {
+            if (this.character.isColliding(enemy) ) {
+                this.character.hit();
+                this.healthBar.setPercentage(this.character.energy);
+            }
+        });
+     
     }
 
     draw() {
@@ -50,7 +64,7 @@ class World {
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.bubbleAttack);
 
         this.ctx.translate(-this.camera_x, 0);
  

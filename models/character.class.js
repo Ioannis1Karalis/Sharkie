@@ -84,6 +84,28 @@ class Character extends MovableObject{
         'img/2.Sharkie/5.Hurt/2.Electric shock/3.png'
     ];
 
+    IMAGES_BUBBLE_ATTACK = [
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png'
+    ];
+
+    IMAGES_POISON_BUBBLE_ATTACK = [
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/1.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/2.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/3.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/4.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/5.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/6.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/7.png',
+        'img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png'
+    ];
+
     world;
 
     constructor(){

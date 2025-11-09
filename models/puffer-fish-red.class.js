@@ -26,6 +26,12 @@ class PufferFishRed extends MovableObject {
         'img/3.Enemy/1.Puffer fish/3.Bubbleeswim/3.bubbleswim5.png'
     ];
 
+    IMAGES_DEAD = [
+        'img/3.Enemy/1.Puffer fish/4.DIE/3.png',
+        'img/3.Enemy/1.Puffer fish/4.DIE/3.3.png',
+        'img/3.Enemy/1.Puffer fish/4.DIE/3.2.png'
+    ];
+
     constructor(x, y) {
         super().loadImage(this.IMAGES_SWIMMING[0]);
         this.loadImages(this.IMAGES_SWIMMING);

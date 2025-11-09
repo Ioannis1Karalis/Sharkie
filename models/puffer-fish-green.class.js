@@ -27,6 +27,12 @@ class PufferFishGreen extends MovableObject {
         'img/3.Enemy/1.Puffer fish/3.Bubbleeswim/1.bubbleswim5.png'
     ];
 
+    IMAGES_DEAD = [
+        'img/3.Enemy/1.Puffer fish/4.DIE/1.Dead 1 (can animate by going up).png',
+        'img/3.Enemy/1.Puffer fish/4.DIE/1.Dead 2 (can animate by going down to the floor after the Fin Slap attack).png',
+        'img/3.Enemy/1.Puffer fish/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png'
+    ];
+
     constructor(x, y) {
         super().loadImage(this.IMAGES_SWIMMING[0]);
         this.loadImages(this.IMAGES_SWIMMING);
