@@ -1,7 +1,7 @@
 class Character extends MovableObject{
 
-    height = 300;
-    width = 250;
+    height = 280;
+    width = 230;
     y = 40;
     x = 10;
     speed = 10;
@@ -78,7 +78,7 @@ class Character extends MovableObject{
         'img/2.Sharkie/5.Hurt/1.Poisoned/5.png'
     ];
 
-    IMAGES_ELECTRIC_SHOCK = [ // muss noch eingebaut werden - mit Quallen Kollision 
+    IMAGES_ELECTRIC_SHOCK = [
         'img/2.Sharkie/5.Hurt/2.Electric shock/1.png',
         'img/2.Sharkie/5.Hurt/2.Electric shock/2.png',
         'img/2.Sharkie/5.Hurt/2.Electric shock/3.png'
@@ -126,7 +126,6 @@ class Character extends MovableObject{
     }
 
     animate() {
-        // === Bewegung ===
         setInterval(() => {
             let moving = false;
 
@@ -147,15 +146,13 @@ class Character extends MovableObject{
                 moving = true;
             }
 
-            if (this.world.keyboard.DOWN && this.y < 250) {
+            if (this.world.keyboard.DOWN && this.y < 270) {
                 this.y += this.speed;
                 moving = true;
             }
 
-            // Kamera folgt Sharkie
             this.world.camera_x = -this.x + 20;
 
-            // === Bewegung prüfen ===
             if (moving) {
                 this.idleTime = 0; 
             } else {
@@ -169,10 +166,10 @@ class Character extends MovableObject{
             if (this.isDead()) {
               this.playAnimation(this.IMAGES_DEAD);
           
-            } else if (this.isElectrocuted) {              // ← zuerst Schock
+            } else if (this.isElectrocuted) {
               this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
           
-            } else if (this.isPoisoned || this.isHurt()) { // ← dann Hurt/Poison
+            } else if (this.isPoisoned || this.isHurt()) {
               this.playAnimation(this.IMAGES_POISONED);
           
             } else if (moving) {

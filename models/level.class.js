@@ -2,7 +2,7 @@ class Level {
     enemies;
     backgroundObjects;
     collectableItems;           // ← konsistenter Name
-    level_end_x = 720 * 5;
+    level_end_x = 4300;
     level_top_y = -130;
     level_bottom_y = 250;
   
