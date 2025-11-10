@@ -16,17 +16,23 @@ const level1 = new Level(
     ],
 
     [
-    new Coins(600, 200),
-    new Coins(675, 170),
-    new Coins(750, 150),
-    new Coins(825, 170),
-    new Coins(900, 200),
-    
-    new Coins(2250, 350),
-    new Coins(2325, 350),
-    new Coins(2400, 350),
-    new Coins(2475, 350),
-    new Coins(2550, 350)
+    Collectable.coin(600, 200),
+    Collectable.coin(675, 170),
+    Collectable.coin(750, 150),
+    Collectable.coin(825, 170),
+    Collectable.coin(900, 200),
+    Collectable.coin(2250, 310),
+    Collectable.coin(2325, 20),
+    Collectable.coin(2400, 20),
+    Collectable.coin(2475, 20),
+    Collectable.coin(2550, 310),
+
+    Collectable.poisonLeft(450,360),
+    Collectable.poisonLeft(890,370),
+    Collectable.poisonRight(1930,390),
+    Collectable.poisonLeft(2350,390),
+    Collectable.poisonRight(2740,390),
+    Collectable.poisonRight(3050,390),
     ],
 
     [
@@ -68,5 +74,4 @@ const level1 = new Level(
     new BackgroundObject('img/4.Background/Layers/2. Floor/D2.png', 720*5, 0),
     new BackgroundObject('img/4.Background/Layers/1. Light/2.png', 720*5, 0)
     ],
-
 );

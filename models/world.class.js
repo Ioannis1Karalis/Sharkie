@@ -9,8 +9,7 @@ class World {
     coinsBar = new CoinsBar();
     poisonBar = new PoisonBar();
     bubbleAttack = [new BubbleAttack()];
-    barrier = new Barrier();
-    
+    barrier = new Barrier();    
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -74,7 +73,7 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.coins);
+        this.addObjectsToMap(this.level.collectableItems);
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.barrier);

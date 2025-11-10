@@ -22,6 +22,7 @@ class DrawbleObject {
             this instanceof PufferFishRed ||
             this instanceof PufferFishGreen ||
             this instanceof JellyFish ||
+            this instanceof Collectable ||
             this instanceof Endboss
         ) {
             const offset = this.offset || { top: 0, left: 0, right: 0, bottom: 0 };
