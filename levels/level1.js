@@ -18,26 +18,6 @@ const level1 = new Level(
     ],
 
     [
-    Collectable.coin(600, 200),
-    Collectable.coin(675, 170),
-    Collectable.coin(750, 150),
-    Collectable.coin(825, 170),
-    Collectable.coin(900, 200),
-    Collectable.coin(2350, 310),
-    Collectable.coin(2425, 20),
-    Collectable.coin(2500, 20),
-    Collectable.coin(2575, 20),
-    Collectable.coin(2650, 310),
-
-    Collectable.poisonLeft(225,390),
-    Collectable.poisonLeft(730,400),
-    Collectable.poisonRight(1930,390),
-    Collectable.poisonLeft(2530,390),
-    Collectable.poisonRight(2900,390),
-    Collectable.poisonRight(3750,390),
-    ],
-
-    [
     new BackgroundObject('img/4.Background/Layers/5. Water/D2.png', -880, 0),
     new BackgroundObject('img/4.Background/Layers/4.Fondo 2/D2.png', -880, 0),
     new BackgroundObject('img/4.Background/Layers/3.Fondo 1/D2.png', -880, 0),
@@ -76,4 +56,24 @@ const level1 = new Level(
     new BackgroundObject('img/4.Background/Layers/2. Floor/D2.png', 880*5, 0),
     new BackgroundObject('img/4.Background/Layers/1. Light/2.png', 880*5, 0)
     ],
+
+    [
+    Collectable.coin(600, 200),
+    Collectable.coin(675, 170),
+    Collectable.coin(750, 150),
+    Collectable.coin(825, 170),
+    Collectable.coin(900, 200),
+    Collectable.coin(2350, 310),
+    Collectable.coin(2425, 20),
+    Collectable.coin(2500, 20),
+    Collectable.coin(2575, 20),
+    Collectable.coin(2650, 310),
+    
+    Collectable.poisonLeft(225,390),
+    Collectable.poisonLeft(730,400),
+    Collectable.poisonRight(1930,390),
+    Collectable.poisonLeft(2530,390),
+    Collectable.poisonRight(2900,390),
+    Collectable.poisonRight(3750,390),
+    ]
 );
