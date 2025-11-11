@@ -7,6 +7,16 @@ function init(){
     world = new World(canvas, keyboard);
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('fs-btn');
+    const canvasEl  = document.getElementById('canvas');
+  
+    btn.addEventListener('click', function (e) {
+      
+      canvasEl.requestFullscreen();
+    });
+});
+
 window.addEventListener("keydown", (e) => {
     if(e.keyCode == 39) {
         keyboard.RIGHT = true;

@@ -39,6 +39,32 @@ h1 {
     display: block;
 }
 
+#game-container { 
+    position: relative; 
+} 
+
+.fs-btn {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: white;
+}
+
+.fs-btn:hover { 
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+.fs-btn img { 
+    width: 40px; 
+    height: 40px;
+}
+
 @media only screen and (max-width: 880px) {
     #canvas {
         width: 100%;
