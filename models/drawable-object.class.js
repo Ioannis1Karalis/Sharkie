@@ -13,6 +13,9 @@ class DrawbleObject {
     }
 
     draw(ctx) {
+        if (!(this.img instanceof Image)) {
+          return;
+        }
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 

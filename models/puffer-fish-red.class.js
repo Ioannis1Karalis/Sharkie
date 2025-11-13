@@ -37,6 +37,8 @@ class PufferFishRed extends MovableObject {
         this.loadImages(this.IMAGES_SWIMMING);
         this.loadImages(this.IMAGES_TRANSITION);
         this.loadImages(this.IMAGES_BUBBLE);
+        this.isDead = false;
+        this.loadImages(this.IMAGES_DEAD);
 
         this.offset = {
             top: 0,
@@ -58,21 +60,16 @@ class PufferFishRed extends MovableObject {
 
     animate() {
         this.moveLeft();
-
         setInterval(() => {
-            if (this.mode == "normal") {
-                this.playAnimation(this.IMAGES_SWIMMING);
-            } else if (this.mode == "transition") {
-                this.playTransitionAnimation();
-            } else if (this.mode == "bubble") {
-                this.playAnimation(this.IMAGES_BUBBLE);
-            }
+          if (this.isDead) return;
+          if (this.mode == "normal")        this.playAnimation(this.IMAGES_SWIMMING);
+          else if (this.mode == "transition") this.playTransitionAnimation();
+          else if (this.mode == "bubble")      this.playAnimation(this.IMAGES_BUBBLE);
         }, 150);
-
-        setTimeout(() => {
-            this.startCycle();
-        }, this.startDelay);
-    }
+    
+        setTimeout(() => { this.startCycle(); }, this.startDelay);
+      }
+    
 
     startCycle() {
         this.mode = "normal";
@@ -83,21 +80,48 @@ class PufferFishRed extends MovableObject {
     }
 
     playTransitionAnimation() {
+        if (this.isDead) return;
         if (!this.transitionStarted) {
-            this.transitionStarted = true;
-            this.currentFrame = 0;
-
-            this.transitionInterval = setInterval(() => {
-                this.img = this.imageCache[this.IMAGES_TRANSITION[this.currentFrame]];
-                this.currentFrame++;
-
-                if (this.currentFrame >= this.IMAGES_TRANSITION.length) {
-                    clearInterval(this.transitionInterval);
-                    this.transitionStarted = false;
-                    this.startBubblePhase();
-                }
-            }, 150);
+          this.transitionStarted = true;
+          this.currentFrame = 0;
+          this.transitionInterval = setInterval(() => {
+            if (this.isDead) { clearInterval(this.transitionInterval); return; }
+            this.img = this.imageCache[this.IMAGES_TRANSITION[this.currentFrame]];
+            this.currentFrame++;
+            if (this.currentFrame >= this.IMAGES_TRANSITION.length) {
+              clearInterval(this.transitionInterval);
+              this.transitionStarted = false;
+              this.startBubblePhase();
+            }
+          }, 150);
         }
+    }
+
+    die() {
+        if (this.isDead) return;
+        this.isDead = true;
+    
+        this.speed = 0;
+        if (this.transitionInterval) { clearInterval(this.transitionInterval); this.transitionInterval = null; }
+    
+        let i = 0;
+        const frames = this.IMAGES_DEAD;
+        const run = setInterval(() => {
+          this.img = this.imageCache[frames[i]];
+          i++;
+          if (i >= frames.length) {
+            clearInterval(run);
+            let steps = 20;
+            const floatUp = setInterval(() => {
+              this.y -= 2;
+              steps--;
+              if (steps <= 0) {
+                clearInterval(floatUp);
+                this.markForRemoval = true;
+              }
+            }, 30);
+          }
+        }, 120);
     }
 
     startTransition() {

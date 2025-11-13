@@ -7,6 +7,8 @@ class Character extends MovableObject{
     speed = 10;
     idleTime = 0;
     sleepThreshold = 4000;
+    isAttacking = false;
+    _attackTimer = null;     
 
     IMAGES_REGULAR = [
         'img/2.Sharkie/1.IDLE/1.png',
@@ -116,12 +118,15 @@ class Character extends MovableObject{
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_POISONED);
         this.loadImages(this.IMAGES_ELECTRIC_SHOCK);
-
+      
+        this.loadImages(this.IMAGES_BUBBLE_ATTACK);
+        this.loadImages(this.IMAGES_POISON_BUBBLE_ATTACK);
+      
         this.isElectrocuted = false;
         this.isPoisoned = false;
-
+        this.isAttacking = false;
+      
         this.animate();
-
         this.offset = { top:140, left:50, right:50, bottom:70 };
     }
 
@@ -161,29 +166,31 @@ class Character extends MovableObject{
         }, 1000 / 60);
 
         setInterval(() => {
-            const moving = this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN;
+            if (this.isAttacking) return;
+          
+            const moving =
+              this.world.keyboard.RIGHT ||
+              this.world.keyboard.LEFT  ||
+              this.world.keyboard.UP    ||
+              this.world.keyboard.DOWN;
           
             if (this.isDead()) {
               this.playAnimation(this.IMAGES_DEAD);
           
             } else if (this.isElectrocuted) {
               this.playAnimation(this.IMAGES_ELECTRIC_SHOCK);
-          
             } else if (this.isPoisoned || this.isHurt()) {
               this.playAnimation(this.IMAGES_POISONED);
-          
             } else if (moving) {
               this.playAnimation(this.IMAGES_SWIMMING);
               this.idleTime = 0;
               this.hasFallenAsleep = false;
-          
             } else if (this.idleTime > this.sleepThreshold) {
               this.playSleepingAnimation();
-          
             } else {
               this.playAnimation(this.IMAGES_REGULAR);
             }
-          }, 120);
+        }, 120);
     }
 
     playSleepingAnimation() {
@@ -214,5 +221,62 @@ class Character extends MovableObject{
             this.sleepLoopIndex = (this.sleepLoopIndex + 1) % loopFrames.length;
             this.lastSleepFrameTime = now; 
         }
+    }
+
+    _playOnce(frames, frameMs, cb) {
+        if (this._attackTimer) clearInterval(this._attackTimer);
+        this.isAttacking = true;
+        let i = 0;
+    
+        this._attackTimer = setInterval(() => {
+          this.img = this.imageCache[frames[i]];
+          i++;
+          if (i >= frames.length) {
+            clearInterval(this._attackTimer);
+            this._attackTimer = null;
+            this.isAttacking = false;
+            if (cb) cb();
+          }
+        }, frameMs);
+    }
+
+
+    throwNormal() {
+        if (this.isAttacking) return;
+        this.isAttacking = true;
+  
+        let i = 0;
+        const frames = this.IMAGES_BUBBLE_ATTACK;
+        const t = setInterval(() => {
+        this.img = this.imageCache[frames[i]];
+        i++;
+        if (i >= frames.length) {
+        clearInterval(t);
+        this.isAttacking = false;
+        this.world.spawnBubble(false); 
+        }}, 80);
+    }
+  
+    throwPoison() {
+        if (this.isAttacking) return;
+        if (this.world.poisonAmmo <= 0) return;
+  
+        this.isAttacking = true;
+  
+        let i = 0;
+        const frames = this.IMAGES_POISON_BUBBLE_ATTACK;
+        const t = setInterval(() => {
+        this.img = this.imageCache[frames[i]];
+        i++;
+        if (i >= frames.length) {
+            clearInterval(t);
+        this.isAttacking = false;
+  
+        this.world.poisonAmmo = Math.max(0, this.world.poisonAmmo - 1);
+        const pct = Math.min(100, (this.world.poisonAmmo / this.world.POISON_PER_100) * 100);
+        this.world.poisonBar.setPercentage(pct);
+  
+        this.world.spawnBubble(true);
+        }}, 80);
     }
 }
