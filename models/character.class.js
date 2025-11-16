@@ -1,4 +1,3 @@
-// character.class.js
 class Character extends MovableObject {
   height = 280;
   width = 230;

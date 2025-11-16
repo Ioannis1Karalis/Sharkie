@@ -17,9 +17,12 @@ class World {
   COINS_TARGET = 10;
 
   bubbles = [];
-  _firedD = false;
-  _firedSpace = false;
+  firedD = false;
+  firedSpace = false;
   fireLock = false;
+
+  endboss = null;
+  endbossTriggered = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -27,6 +30,9 @@ class World {
     this.keyboard = keyboard;
 
     this.setWorld();
+
+    this.endboss = this.level.enemies.find((e) => e instanceof Endboss) || null;
+
     this.startCollectableAnims();
     this.swim();
     this.draw();
@@ -34,6 +40,7 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    (this.level.enemies || []).forEach((e) => (e.world = this));
   }
 
   swim() {
@@ -41,6 +48,9 @@ class World {
       this.checkCollisions();
       this.checkThrowableObjects();
       this.checkCollectablePickup?.();
+
+      this.checkBossTrigger();
+
       this.checkBubbleHits();
       this.cleanupCorpsesAndBubbles?.();
     }, 200);
@@ -78,21 +88,21 @@ class World {
   }
 
   checkThrowableObjects() {
-    if (this.keyboard.D && !this._firedD) {
-      this._firedD = true;
+    if (this.keyboard.D && !this.firedD) {
+      this.firedD = true;
       if (this.character.throwNormal) {
         this.character.throwNormal();
       } else {
         this.spawnBubble(false);
       }
     }
-    if (!this.keyboard.D) this._firedD = false;
+    if (!this.keyboard.D) this.firedD = false;
 
-    if (this.keyboard.SPACE && !this._firedSpace) {
-      this._firedSpace = true;
+    if (this.keyboard.SPACE && !this.firedSpace) {
+      this.firedSpace = true;
       if (this.poisonAmmo > 0) {
         if (this.character.throwPoison) {
-          this.character.throwPoison(); 
+          this.character.throwPoison();
         } else {
           this.poisonAmmo--;
           this.updatePoisonBar();
@@ -100,7 +110,7 @@ class World {
         }
       }
     }
-    if (!this.keyboard.SPACE) this._firedSpace = false;
+    if (!this.keyboard.SPACE) this.firedSpace = false;
   }
 
   updatePoisonBar() {
@@ -121,6 +131,14 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (!this.character.isColliding(enemy)) return;
       if (Date.now() - this.character.lastHit < 600) return;
+
+      if (enemy instanceof Endboss) {
+        if (enemy.state === "attack" && this.character.isColliding(enemy)) {
+          this.character.hit(10); 
+          this.healthBar.setPercentage(this.character.energy);
+        }
+        return;
+      }
 
       if (enemy instanceof JellyFish) {
         if (enemy.isDangerous) {
@@ -171,17 +189,26 @@ class World {
         if (typeof b.destroy === "function") b.destroy();
         else b.markForRemoval = true;
 
-        if (e instanceof JellyFish) {
-          if (!e.isDangerous && typeof e.die === "function") e.die();
-          continue;
-        }
+        if (e instanceof Endboss) {
+            if (b.isPoison && typeof e.takeHit === "function") e.takeHit();
+          
+            if (typeof b.destroy === "function") b.destroy();
+            this.bubbles.splice(bi, 1);
+          
+            break;
+          }
 
         if (
           (e instanceof PufferFishGreen || e instanceof PufferFishRed) &&
           typeof e.die === "function"
         ) {
           e.die();
-          continue;
+          break;
+        }
+
+        if (e instanceof JellyFish) {
+          if (!e.isDangerous && typeof e.die === "function") e.die();
+          break;
         }
       }
     }
@@ -192,8 +219,31 @@ class World {
     this.bubbles = this.bubbles.filter((b) => !b.markForRemoval);
   }
 
+  checkBossTrigger() {
+    if (!this.endboss || this.endbossTriggered) return;
+
+    if (this.character.x >= 4100) {
+      this.endbossTriggered = true;
+
+      if (this.endboss.state === "hidden" || this.endboss.hidden === true) {
+        if (typeof this.endboss.startIntro === "function") {
+          this.endboss.startIntro();
+        } else if (typeof this.endboss.triggerIntro === "function") {
+          this.endboss.triggerIntro();
+        } else {
+          this.endboss.state = "idle";
+          this.endboss.hidden = false;
+        }
+      }
+    }
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    if (this.endboss && typeof this.endboss.update === "function") {
+      this.endboss.update(this.character);
+    }
 
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
@@ -220,6 +270,8 @@ class World {
   }
 
   addToMap(mo) {
+    if (mo && (mo.state === "hidden" || mo.hidden === true)) return;
+
     if (mo.otherDirection) this.flipImage(mo);
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
