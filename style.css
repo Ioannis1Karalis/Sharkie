@@ -1,79 +1,167 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    overflow: hidden;
-    font-family: 'pwbubbles';
-    color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  overflow: hidden;
+  font-family: "pwbubbles";
+  color: white;
 }
 
 h1 {
-    font-size: 50px;
-    text-shadow: 5px 5px 8px rgb(0, 0, 0);
-    padding-top: 50px;
+  font-size: 50px;
+  text-shadow: 5px 5px 8px rgb(0, 0, 0);
+  padding-top: 50px;
 }
 
 @font-face {
-    font-family: 'pwbubbles';
-    src: url('/fonts/pwbubbles.ttf');
+  font-family: "pwbubbles";
+  src: url("/fonts/pwbubbles.ttf");
 }
 
 .background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('img/background/background.png');
-    background-size: cover;
-    background-position: center;
-    filter: blur(3px);
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("img/background/background.png");
+  background-size: cover;
+  background-position: center;
+  filter: blur(3px);
+  z-index: -1;
 }
 
 #canvas {
-    background-color: black;
-    border: 2px solid #222;
-    z-index: 1;  
-    display: block;
+  /*  background-color: black; */
+  /*  border: 2px solid #222; */
+  z-index: 1;
+  display: block;
 }
 
-#game-container { 
-    position: relative; 
-} 
+#game-container {
+  position: relative;
+}
+
+#start-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+}
+
+#start-overlay .overlay-bg {
+  position: absolute;
+  inset: 0;
+}
+
+#start-btn-img {
+  padding-top: 100px;
+  position: relative;
+  width: 240px; 
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+#start-btn-img:hover {
+  transform: scale(1.05);
+}
+
+#info-btn-img {
+  position: relative;
+  width: 70px; 
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+#info-btn-img:hover {
+  transform: scale(1.05);
+}
+
+#info-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#info-modal.show {
+  display: flex;
+}
+
+#info-modal .modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+#info-modal .modal-content {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  width: fit-content;
+  height: fit-content;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+#info-modal .modal-content img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100vh - 48px);
+  border-radius: 12px;
+}
 
 .fs-btn {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    border: 0;
-    border-radius: 8px;
-    background: none;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    color: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
-.fs-btn:hover { 
-    background: rgba(0, 0, 0, 0.5); 
+#game-container.started .fs-btn {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.fs-btn img { 
-    width: 40px; 
-    height: 40px;
+.fs-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: white;
+}
+
+.fs-btn:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.fs-btn img {
+  width: 40px;
+  height: 40px;
 }
 
 @media only screen and (max-width: 880px) {
-    #canvas {
-        width: 100%;
-    }
+  #canvas {
+    width: 100%;
+  }
 }
 
 @media only screen and (max-height: 520px) {
-    #canvas {
-        height: 100vh;
-    }
+  #canvas {
+    height: 100vh;
+  }
 }
-  

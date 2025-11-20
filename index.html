@@ -27,21 +27,33 @@
     <script src="js/game.js"></script>
 </head>
 
-<body onload="init()">
+<body>
     
     <h1>Sharkie</h1>
 
     <div class="background"></div>
-
+  
     <div id="game-container">
-        
-        <canvas id="canvas" width="880" height="520"></canvas>
-      
-        <button class="fs-btn" id="fs-btn" title="Vollbild">
-          <img src="img/icons/full-screen-icon.png" alt="full-screen-icon">
-        </button>
-    </div>
+      <canvas id="canvas" width="880" height="520"></canvas>
+  
+      <button class="fs-btn" id="fs-btn" title="Fullscreen">
+        <img src="img/icons/full-screen-icon.png" alt="full-screen-icon">
+      </button>
+  
+      <div id="start-overlay" aria-label="Start screen">
+        <div class="overlay-bg"></div>
+        <img id="start-btn-img" src="img/icons/start.png" alt="Start game">
+        <img id="info-btn-img" src="img/icons/info.png" alt="How to play" />
+      </div>
 
+      <div id="info-modal" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+          <img src="img/icons/keys.png" alt="Controls">
+        </div>
+      </div>
+
+    </div>
 
 </body>
 

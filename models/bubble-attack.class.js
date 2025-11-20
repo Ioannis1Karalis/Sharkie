@@ -14,13 +14,13 @@ class Bubble extends MovableObject {
       );
   
       const dx = dirLeft ? -8 : 8;
-      this._moveTimer = setInterval(() => { this.x += dx; }, 30);
+      this.moveTimer = setInterval(() => { this.x += dx; }, 30);
     }
   
     destroy() {
-      if (this._moveTimer) {
-        clearInterval(this._moveTimer);
-        this._moveTimer = null;
+      if (this.moveTimer) {
+        clearInterval(this.moveTimer);
+        this.moveTimer = null;
       }
       this.markForRemoval = true;
     }

@@ -2,20 +2,53 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
-function init(){
+function init() {
     canvas = document.getElementById('canvas');
+    window.level1 = createLevel1();
     world = new World(canvas, keyboard);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('fs-btn');
-    const canvasEl  = document.getElementById('canvas');
+document.addEventListener('DOMContentLoaded', () => {
+    const canvasEl = document.getElementById('canvas');
+    const btnFs    = document.getElementById('fs-btn');
+    if (btnFs && canvasEl && canvasEl.requestFullscreen) {
+      btnFs.addEventListener('click', () => canvasEl.requestFullscreen());
+    }
   
-    btn.addEventListener('click', function (e) {
-      
-      canvasEl.requestFullscreen();
-    });
+    const startBtn = document.getElementById('start-btn-img');
+    const overlay  = document.getElementById('start-overlay');
+    const container = document.getElementById('game-container');
+  
+    if (startBtn && overlay) {
+      startBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        container?.classList.add('started');
+        if (!window.world) init(); 
+      });
+    }
+    initInfoModal();
 });
+
+function initInfoModal() {
+    const infoBtn = document.getElementById('info-btn-img');
+    const modal   = document.getElementById('info-modal');
+    if (!infoBtn || !modal) {
+      if (!infoBtn) console.warn('#info-btn-img nicht gefunden – Info-Button wird nicht verdrahtet.');
+      if (!modal)   console.warn('#info-modal nicht gefunden – Info-Overlay existiert nicht im DOM.');
+      return;
+    }
+  
+    const backdrop = modal.querySelector('.modal-backdrop');
+    const content  = modal.querySelector('.modal-content');
+  
+    const open  = () => { modal.classList.add('show');  modal.setAttribute('aria-hidden', 'false'); };
+    const close = () => { modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true'); };
+  
+    infoBtn.addEventListener('click', open);
+    if (backdrop) backdrop.addEventListener('click', close);
+    if (content) content.addEventListener('click', (e) => e.stopPropagation());
+}
+  
 
 window.addEventListener("keydown", (e) => {
     if(e.keyCode == 39) {
