@@ -203,39 +203,71 @@ h1 {
 
 /* End-Overlay */
 .end-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 999;
-    display: grid;
-    place-items: center;
-    background: rgba(0, 0, 0, 0.55);
-  }
-  
-  /* Panel mit Bild + Restart */
-  .end-panel {
-    display: grid;
-    gap: 16px;
-    place-items: center;
-  }
-  
-  /* Ergebnis-Grafik (Win/Game Over) */
-  .end-image {
-    max-width: 80%;
-    height: auto;
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
-  }
-  
-  /* Restart-Button (als Bild) */
-  .restart-btn {
-    width: 220px;
-    cursor: pointer;
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
-    transition: transform .15s ease;
-  }
-  .restart-btn:hover {
-    transform: scale(1.04);
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Panel mit Bild + Restart */
+.end-panel {
+  display: grid;
+  gap: 16px;
+  place-items: center;
+}
+
+/* Ergebnis-Grafik (Win/Game Over) */
+.end-image {
+  max-width: 80%;
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+}
+
+/* Restart-Button (als Bild) */
+.restart-btn {
+  width: 220px;
+  cursor: pointer;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
+  transition: transform 0.15s ease;
+}
+.restart-btn:hover {
+  transform: scale(1.04);
+}
+
+/* Loading-Overlay */
+#loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: none; /* per JS sichtbar */
+  place-items: center;
+  z-index: 20; /* über Canvas & UI */
+  background: #000; /* tiefschwarz beim Laden */
+}
+#loading-overlay.show {
+  display: grid;
+}
+
+#start-overlay.hide {
+    display: none;
   }
 
+/* Spinner */
+.spinner {
+  width: 72px;
+  height: 72px;
+  border: 6px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media only screen and (max-width: 880px) {
   #canvas {

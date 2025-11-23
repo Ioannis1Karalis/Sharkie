@@ -241,9 +241,13 @@ class World {
   }
 
   draw() {
+    if (!this._loaderNotified && typeof this.onFirstFrame === "function") {
+      this._loaderNotified = true;
+      this.onFirstFrame();
+    }
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Boss-Logik (weiterlaufen lassen; Overlay liegt oben drüber)
     if (this.endboss && typeof this.endboss.update === "function") {
       this.endboss.update(this.character);
     }
@@ -263,7 +267,6 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.bubbles);
     this.ctx.translate(-this.camera_x, 0);
-
     requestAnimationFrame(() => this.draw());
   }
 
@@ -292,17 +295,16 @@ class World {
     this.ctx.restore();
   }
 
-  scheduleEndGame(result /* 'win' | 'lose' */) {
+  scheduleEndGame(result) {
     if (this._endScheduled) return;
     this._endScheduled = true;
     this.showEndOverlay(result);
   }
 
-  showEndOverlay(result /* 'win' | 'lose' */) {
+  showEndOverlay(result) {
     if (this._endOverlayShown) return;
     this._endOverlayShown = true;
 
-    // ← Alles ausblenden
     this.hideActors();
 
     const root = document.getElementById("game-container");
