@@ -24,6 +24,8 @@ class World {
   endboss = null;
   endbossTriggered = false;
 
+  gameEnded = false;
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -134,7 +136,7 @@ class World {
 
       if (enemy instanceof Endboss) {
         if (enemy.state === "attack" && this.character.isColliding(enemy)) {
-          this.character.hit(10); 
+          this.character.hit(10);
           this.healthBar.setPercentage(this.character.energy);
         }
         return;
@@ -190,13 +192,13 @@ class World {
         else b.markForRemoval = true;
 
         if (e instanceof Endboss) {
-            if (b.isPoison && typeof e.takeHit === "function") e.takeHit();
-          
-            if (typeof b.destroy === "function") b.destroy();
-            this.bubbles.splice(bi, 1);
-          
-            break;
-          }
+          if (b.isPoison && typeof e.takeHit === "function") e.takeHit();
+
+          if (typeof b.destroy === "function") b.destroy();
+          this.bubbles.splice(bi, 1);
+
+          break;
+        }
 
         if (
           (e instanceof PufferFishGreen || e instanceof PufferFishRed) &&
@@ -241,6 +243,7 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    // Boss-Logik (weiterlaufen lassen; Overlay liegt oben drüber)
     if (this.endboss && typeof this.endboss.update === "function") {
       this.endboss.update(this.character);
     }
@@ -287,5 +290,53 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  scheduleEndGame(result /* 'win' | 'lose' */) {
+    if (this._endScheduled) return;
+    this._endScheduled = true;
+    this.showEndOverlay(result);
+  }
+
+  showEndOverlay(result /* 'win' | 'lose' */) {
+    if (this._endOverlayShown) return;
+    this._endOverlayShown = true;
+
+    // ← Alles ausblenden
+    this.hideActors();
+
+    const root = document.getElementById("game-container");
+    const overlay = root?.querySelector("#end-overlay");
+    if (!overlay) {
+      console.warn(
+        "#end-overlay nicht gefunden (muss innerhalb von #game-container liegen)."
+      );
+      return;
+    }
+
+    const img = overlay.querySelector("#end-image");
+    img.src = result === "win" ? "img/icons/win.png" : "img/icons/gameover.png";
+    img.alt = result === "win" ? "You win" : "Game Over";
+
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+
+    const restart = overlay.querySelector("#restart-btn");
+    const backdrop = overlay.querySelector(".end-backdrop");
+    const doRestart = () => {
+      sessionStorage.setItem("AUTO_START", "1");
+      location.reload();
+    };
+    restart?.addEventListener("click", doRestart);
+    backdrop?.addEventListener("click", doRestart);
+  }
+
+  hideActors() {
+    if (this.character) this.character.hidden = true;
+    (this.level?.enemies || []).forEach((e) => (e.hidden = true));
+    (this.bubbles || []).forEach((b) => (b.hidden = true));
+    if (this.healthBar) this.healthBar.hidden = true;
+    if (this.coinsBar) this.coinsBar.hidden = true;
+    if (this.poisonBar) this.poisonBar.hidden = true;
   }
 }

@@ -132,17 +132,20 @@ class Endboss extends MovableObject {
     }
   
     takeHit() {
-      if (this.state === "dead") return;
-      this.hitsLeft = Math.max(0, this.hitsLeft - 1);
-  
-      if (this.hitsLeft === 0) {
-        this.state = "dead";
-        this.playOnce(this.IMAGES_DEAD, 200, () => { this.markForRemoval = true; });
-      } else {
-        this.state = "hurt";
-        this.playOnce(this.IMAGES_HURT, 180, () => this.startChase());
+        if (this.state === "dead") return;
+        this.hitsLeft = Math.max(0, this.hitsLeft - 1);
+      
+        if (this.hitsLeft === 0) {
+          this.state = "dead";
+          this.playOnce(this.IMAGES_DEAD, 200, () => {
+            this.markForRemoval = true;
+            this.world?.scheduleEndGame('win');   // ← Overlay NACH Dead-Anim
+          });
+        } else {
+          this.state = "hurt";
+          this.playOnce(this.IMAGES_HURT, 180, () => this.startChase());
+        }
       }
-    }
   
     update(character) {
         if (this.state === "hidden" || this.state === "intro" || this.state === "hurt" || this.state === "dead") return;

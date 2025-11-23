@@ -59,7 +59,7 @@ h1 {
 #start-btn-img {
   padding-top: 100px;
   position: relative;
-  width: 240px; 
+  width: 240px;
   cursor: pointer;
   transition: transform 0.15s ease;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
@@ -70,7 +70,7 @@ h1 {
 
 #info-btn-img {
   position: relative;
-  width: 70px; 
+  width: 70px;
   cursor: pointer;
   transition: transform 0.15s ease;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
@@ -153,6 +153,89 @@ h1 {
   width: 40px;
   height: 40px;
 }
+
+/* End-Overlay */
+#end-overlay {
+  position: absolute;
+  inset: 0;
+  display: none; /* per JS sichtbar */
+  place-items: center;
+  z-index: 30; /* über Start-/Info-Overlays */
+}
+#end-overlay.show {
+  display: grid;
+}
+
+#end-overlay .end-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+#end-overlay .end-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 0; /* keine Box – nur Bilder */
+}
+
+#end-image {
+  width: 400px; /* skalierbar, bleibt scharf */
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+}
+
+/* Restart-Button als Bild */
+#restart-btn {
+  width: 200px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+}
+#restart-btn:hover {
+  transform: scale(1.05);
+}
+
+/* End-Overlay */
+.end-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.55);
+  }
+  
+  /* Panel mit Bild + Restart */
+  .end-panel {
+    display: grid;
+    gap: 16px;
+    place-items: center;
+  }
+  
+  /* Ergebnis-Grafik (Win/Game Over) */
+  .end-image {
+    max-width: 80%;
+    height: auto;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+  }
+  
+  /* Restart-Button (als Bild) */
+  .restart-btn {
+    width: 220px;
+    cursor: pointer;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+    transition: transform .15s ease;
+  }
+  .restart-btn:hover {
+    transform: scale(1.04);
+  }
+
 
 @media only screen and (max-width: 880px) {
   #canvas {

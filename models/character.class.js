@@ -173,7 +173,8 @@ class Character extends MovableObject {
         this.world.keyboard.DOWN;
 
       if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
+        this.startDeathSequence();
+        return; // nichts anderes mehr abspielen
       } else if (this.isAttacking) {
         return;
       } else if (this.isElectrocuted) {
@@ -219,15 +220,14 @@ class Character extends MovableObject {
   }
 
   _playOnce(frames, frameMs, done) {
-    if (this.attackTimer) clearInterval(this.attackTimer);
-    this.isAttacking = true;
+    if (this._onceTimer) clearInterval(this._onceTimer);
     let i = 0;
-    this.attackTimer = setInterval(() => {
-      this.img = this.imageCache[frames[i++]];
+    this._onceTimer = setInterval(() => {
+      this.img = this.imageCache[frames[i]];
+      i++;
       if (i >= frames.length) {
-        clearInterval(this.attackTimer);
-        this.attackTimer = null;
-        this.isAttacking = false;
+        clearInterval(this._onceTimer);
+        this._onceTimer = null;
         if (done) done();
       }
     }, frameMs);
@@ -272,5 +272,15 @@ class Character extends MovableObject {
       }
       this.img = this.imageCache[frames[i++]];
     }, step);
+  }
+
+  startDeathSequence() {
+    if (this._deathStarted) return;
+    this._deathStarted = true;
+
+    // _playOnce hast du bereits; sonst gleich unten ersatzweise hinzufügen.
+    this._playOnce(this.IMAGES_DEAD, 200, () => {
+      this.world?.scheduleEndGame("lose"); // ← Overlay NACH Dead-Anim
+    });
   }
 }

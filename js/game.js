@@ -10,24 +10,30 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvasEl = document.getElementById('canvas');
-    const btnFs    = document.getElementById('fs-btn');
-    if (btnFs && canvasEl && canvasEl.requestFullscreen) {
-      btnFs.addEventListener('click', () => canvasEl.requestFullscreen());
+    const fsBtn    = document.getElementById('fs-btn');
+    if (fsBtn && canvasEl && canvasEl.requestFullscreen) {
+      fsBtn.addEventListener('click', () => canvasEl.requestFullscreen());
     }
   
-    const startBtn = document.getElementById('start-btn-img');
-    const overlay  = document.getElementById('start-overlay');
-    const container = document.getElementById('game-container');
+    const startOverlay = document.getElementById('start-overlay');
+    const startBtn     = document.getElementById('start-btn-img');
   
-    if (startBtn && overlay) {
-      startBtn.addEventListener('click', () => {
-        overlay.style.display = 'none';
-        container?.classList.add('started');
-        if (!window.world) init(); 
-      });
+    // Einheitliche Startfunktion
+    const startGame = () => {
+      startOverlay?.remove();
+      document.getElementById('game-container')?.classList.add('started');
+      init(); // baut Level und World und startet die Loops
+    };
+  
+    // Normaler Start-Button
+    if (startBtn) startBtn.addEventListener('click', startGame);
+  
+    // Nach Restart automatisch starten (Start-Screen überspringen)
+    if (sessionStorage.getItem('AUTO_START') === '1') {
+      sessionStorage.removeItem('AUTO_START');
+      startGame();
     }
-    initInfoModal();
-});
+  });
 
 function initInfoModal() {
     const infoBtn = document.getElementById('info-btn-img');
