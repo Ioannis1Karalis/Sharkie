@@ -79,12 +79,12 @@ class JellyFish extends MovableObject {
     die() {
         if (this.isDead) return;
         this.isDead = true;
-    
+      
         if (this._moveTimer) { clearInterval(this._moveTimer); this._moveTimer = null; }
         if (this._animTimer) { clearInterval(this._animTimer); this._animTimer = null; }
-    
+      
         const frames = this.isDangerous ? this.IMAGES_DEAD_GREEN : this.IMAGES_DEAD_LILA;
-    
+      
         let i = 0;
         const stepMs = 120;
         const run = setInterval(() => {
@@ -92,15 +92,18 @@ class JellyFish extends MovableObject {
           i++;
           if (i >= frames.length) {
             clearInterval(run);
-            let steps = 20;
+      
+            const stepPx = 5; 
+            const intervalMs = 16; 
+            let steps = 36;
             const floatUp = setInterval(() => {
-              this.y -= 2;
-              steps--;
-              if (steps <= 0) {
+              this.y -= stepPx;
+              if (--steps <= 0) {
                 clearInterval(floatUp);
                 this.markForRemoval = true;
               }
-            }, 30);
-        }}, stepMs);
-    }
+            }, intervalMs);
+          }
+        }, stepMs);
+      }
 }

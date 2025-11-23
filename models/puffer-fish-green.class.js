@@ -101,10 +101,10 @@ class PufferFishGreen extends MovableObject {
     die() {
         if (this.isDead) return;
         this.isDead = true;
-    
+      
         this.speed = 0;
         if (this.transitionInterval) { clearInterval(this.transitionInterval); this.transitionInterval = null; }
-    
+      
         let i = 0;
         const frames = this.IMAGES_DEAD;
         const run = setInterval(() => {
@@ -112,18 +112,20 @@ class PufferFishGreen extends MovableObject {
           i++;
           if (i >= frames.length) {
             clearInterval(run);
-            let steps = 20;
+      
+            const stepPx = 5;
+            const intervalMs = 16;
+            let steps = 36;
             const floatUp = setInterval(() => {
-              this.y -= 2;
-              steps--;
-              if (steps <= 0) {
+              this.y -= stepPx;
+              if (--steps <= 0) {
                 clearInterval(floatUp);
                 this.markForRemoval = true;
               }
-            }, 30);
+            }, intervalMs);
           }
         }, 120);
-    }
+      }
 
     startTransition() {
         this.mode = "transition";
