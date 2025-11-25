@@ -101,6 +101,7 @@ class PufferFishGreen extends MovableObject {
     die() {
         if (this.isDead) return;
         this.isDead = true;
+        this.world?.audio?.playHurt();
       
         this.speed = 0;
         if (this.transitionInterval) { clearInterval(this.transitionInterval); this.transitionInterval = null; }

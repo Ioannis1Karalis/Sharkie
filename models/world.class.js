@@ -30,6 +30,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.audio = new AudioManager();
 
     this.setWorld();
 
@@ -80,9 +81,12 @@ class World {
           (this.coinsCollected / this.COINS_TARGET) * 100
         );
         this.coinsBar.setPercentage(pct);
+        this.audio?.playCoin?.();
+
       } else if (it.kind === "poison") {
         this.poisonAmmo++;
         this.updatePoisonBar();
+        this.audio?.playPoison?.();
       }
 
       items.splice(i, 1);

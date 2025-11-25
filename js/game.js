@@ -4,59 +4,62 @@ let keyboard = new Keyboard();
 
 function init() {
   canvas = document.getElementById("canvas");
+
   window.level1 = createLevel1();
   world = new World(canvas, keyboard);
+
+  world?.audio?.playBgm?.();
 }
 
 let loaderShownAt = 0;
 
 function showLoader() {
-  const el = document.getElementById('loading-overlay');
+  const el = document.getElementById("loading-overlay");
   if (!el) return;
   loaderShownAt = performance.now();
-  el.classList.add('show');
-  el.setAttribute('aria-hidden', 'false');
+  el.classList.add("show");
+  el.setAttribute("aria-hidden", "false");
 }
 
-function hideLoader(minMs = 250) { 
-  const el = document.getElementById('loading-overlay');
+function hideLoader(minMs = 250) {
+  const el = document.getElementById("loading-overlay");
   if (!el) return;
   const elapsed = performance.now() - loaderShownAt;
   const wait = Math.max(0, minMs - elapsed);
   setTimeout(() => {
-    el.classList.remove('show');
-    el.setAttribute('aria-hidden', 'true');
+    el.classList.remove("show");
+    el.setAttribute("aria-hidden", "true");
   }, wait);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const canvasEl = document.getElementById('canvas');
-    const btnFs    = document.getElementById('fs-btn');
-    if (btnFs && canvasEl && canvasEl.requestFullscreen) {
-      btnFs.addEventListener('click', () => canvasEl.requestFullscreen());
-    }
-    if (typeof initInfoModal === 'function') {
-      initInfoModal();
-    }
-    const startLayer = document.getElementById('start-overlay');
-    const startBtn   = document.getElementById('start-btn-img');
-  
-    if (startBtn) {
-      startBtn.addEventListener('click', () => {
-        startLayer?.classList.add('hide');
-        startLayer?.setAttribute('aria-hidden','true');
-  
-        if (typeof showLoader === 'function') showLoader();
-        init();
-        if (world) {
-            world.onFirstFrame = () => {
-              hideLoader();
-              document.getElementById('game-container')?.classList.add('started');
-            };
-          }
-      });
-    }
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const canvasEl = document.getElementById("canvas");
+  const btnFs = document.getElementById("fs-btn");
+  if (btnFs && canvasEl && canvasEl.requestFullscreen) {
+    btnFs.addEventListener("click", () => canvasEl.requestFullscreen());
+  }
+  if (typeof initInfoModal === "function") {
+    initInfoModal();
+  }
+  const startLayer = document.getElementById("start-overlay");
+  const startBtn = document.getElementById("start-btn-img");
+
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      startLayer?.classList.add("hide");
+      startLayer?.setAttribute("aria-hidden", "true");
+
+      if (typeof showLoader === "function") showLoader();
+      init();
+      if (world) {
+        world.onFirstFrame = () => {
+          hideLoader();
+          document.getElementById("game-container")?.classList.add("started");
+        };
+      }
+    });
+  }
+});
 
 function initInfoModal() {
   const infoBtn = document.getElementById("info-btn-img");

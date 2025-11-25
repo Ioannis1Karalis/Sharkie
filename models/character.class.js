@@ -235,6 +235,8 @@ class Character extends MovableObject {
 
   throwNormal() {
     if (this.isAttacking) return;
+    this.world?.audio?.playBubble();
+  
     let i = 0;
     const frames = this.IMAGES_BUBBLE_ATTACK;
     this.isAttacking = true;
@@ -250,6 +252,7 @@ class Character extends MovableObject {
 
   throwPoison() {
     if (this.world.fireLock || this.world.poisonAmmo <= 0) return;
+    this.world?.audio?.playBubble();
     this.world.fireLock = true;
     this.isAttacking = true;
 

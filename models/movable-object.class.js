@@ -25,6 +25,7 @@ class MovableObject extends DrawbleObject {
 
     this.energy = Math.max(0, this.energy - dmg);
     this.lastHit = Date.now();
+    this.world?.audio?.playHurt();
   }
 
   isHurt() {

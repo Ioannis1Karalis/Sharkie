@@ -79,6 +79,7 @@ class JellyFish extends MovableObject {
     die() {
         if (this.isDead) return;
         this.isDead = true;
+        this.world?.audio?.playHurt();
       
         if (this._moveTimer) { clearInterval(this._moveTimer); this._moveTimer = null; }
         if (this._animTimer) { clearInterval(this._animTimer); this._animTimer = null; }

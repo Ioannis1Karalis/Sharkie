@@ -134,6 +134,7 @@ class Endboss extends MovableObject {
     takeHit() {
         if (this.state === "dead") return;
         this.hitsLeft = Math.max(0, this.hitsLeft - 1);
+        this.world?.audio?.playHurt();
       
         if (this.hitsLeft === 0) {
           this.state = "dead";
