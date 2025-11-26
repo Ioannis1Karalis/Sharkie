@@ -30,8 +30,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.audio = new AudioManager();
-
+    this.audio = window.__audio;
     this.setWorld();
 
     this.endboss = this.level.enemies.find((e) => e instanceof Endboss) || null;

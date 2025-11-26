@@ -154,13 +154,12 @@ h1 {
   height: 40px;
 }
 
-/* End-Overlay */
 #end-overlay {
   position: absolute;
   inset: 0;
-  display: none; /* per JS sichtbar */
+  display: none;
   place-items: center;
-  z-index: 30; /* über Start-/Info-Overlays */
+  z-index: 30;
 }
 #end-overlay.show {
   display: grid;
@@ -178,18 +177,17 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  padding: 0; /* keine Box – nur Bilder */
+  padding: 0;
 }
 
 #end-image {
-  width: 400px; /* skalierbar, bleibt scharf */
+  width: 400px;
   height: auto;
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
 }
 
-/* Restart-Button als Bild */
 #restart-btn {
   width: 200px;
   height: auto;
@@ -201,7 +199,6 @@ h1 {
   transform: scale(1.05);
 }
 
-/* End-Overlay */
 .end-overlay {
   position: absolute;
   inset: 0;
@@ -211,21 +208,18 @@ h1 {
   background: rgba(0, 0, 0, 0.55);
 }
 
-/* Panel mit Bild + Restart */
 .end-panel {
   display: grid;
   gap: 16px;
   place-items: center;
 }
 
-/* Ergebnis-Grafik (Win/Game Over) */
 .end-image {
   max-width: 80%;
   height: auto;
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
 }
 
-/* Restart-Button (als Bild) */
 .restart-btn {
   width: 220px;
   cursor: pointer;
@@ -236,24 +230,22 @@ h1 {
   transform: scale(1.04);
 }
 
-/* Loading-Overlay */
 #loading-overlay {
   position: absolute;
   inset: 0;
-  display: none; /* per JS sichtbar */
+  display: none;
   place-items: center;
-  z-index: 20; /* über Canvas & UI */
-  background: #000; /* tiefschwarz beim Laden */
+  z-index: 20;
+  background: #000;
 }
 #loading-overlay.show {
   display: grid;
 }
 
 #start-overlay.hide {
-    display: none;
-  }
+  display: none;
+}
 
-/* Spinner */
 .spinner {
   width: 72px;
   height: 72px;
@@ -263,6 +255,36 @@ h1 {
   animation: spin 1s linear infinite;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
 }
+
+#controls {
+  width: 100%;
+  max-width: 880px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#game-container.started + #controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#audio-toggle-btn {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+  transition: transform 0.15s ease;
+}
+#audio-toggle-btn:hover {
+  transform: scale(1.05);
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

@@ -1,17 +1,69 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let loaderShownAt = 0;
 
 function init() {
   canvas = document.getElementById("canvas");
-
   window.level1 = createLevel1();
   world = new World(canvas, keyboard);
 
-  world?.audio?.playBgm?.();
+  syncAudioButton();
+  if (!window.__audio?.muted) {
+    try {
+      window.__audio.playBgm();
+    } catch (_) {}
+  }
 }
 
-let loaderShownAt = 0;
+const MUTE_KEY = "AUDIO_MUTED";
+
+function getMuted() {
+  return localStorage.getItem(MUTE_KEY) === "1";
+}
+
+function setMuted(m) {
+  localStorage.setItem(MUTE_KEY, m ? "1" : "0");
+  window.__audio?.setMuted(!!m);
+}
+
+function updateAudioBtn(btn, muted) {
+  const on = btn.dataset.soundOn || "img/icons/sound-on.png";
+  const off = btn.dataset.soundOff || "img/icons/mute.png";
+  btn.src = muted ? off : on;
+  btn.alt = muted ? "Sound off" : "Sound on";
+}
+
+function syncAudioButton() {
+  const btn = document.querySelector("[data-audio-toggle]");
+  if (!btn) return;
+  const muted = getMuted();
+  updateAudioBtn(btn, muted);
+  window.__audio?.setMuted(muted);
+}
+
+function wireAudioButton() {
+  const btn = document.querySelector("[data-audio-toggle]");
+  if (!btn) return;
+  btn.style.pointerEvents = "auto";
+  btn.addEventListener("click", () => {
+    const muted = !getMuted();
+    setMuted(muted);
+    updateAudioBtn(btn, muted);
+  });
+}
+
+document.addEventListener('visibilitychange', ()=>{
+    if (!window.__audio) return;
+    const muted = localStorage.getItem('AUDIO_MUTED')==='1';
+    if (document.hidden) window.__audio.stopBgm();
+    else if (!muted) window.__audio.playBgm();
+  });
+
+document.addEventListener("DOMContentLoaded", () => {
+  wireAudioButton();
+  syncAudioButton();
+});
 
 function showLoader() {
   const el = document.getElementById("loading-overlay");

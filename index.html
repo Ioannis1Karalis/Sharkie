@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Sharkie</title>
-    <link rel="icon" href="img/5.Marcadores/1. Coins/1.png">
+    <link rel="icon" href="img/5.Marcadores/1. Coins/1.png" />
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
@@ -25,50 +25,55 @@
     <script src="models/endboss.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="models/audio.class.js"></script>
-
     <script src="js/game.js"></script>
-</head>
+  </head>
 
-<body>
-    
+  <body>
     <h1>Sharkie</h1>
 
     <div class="background"></div>
-  
+
     <div id="game-container">
       <canvas id="canvas" width="880" height="520"></canvas>
-  
+
       <button class="fs-btn" id="fs-btn" title="Fullscreen">
-        <img src="img/icons/full-screen-icon.png" alt="full-screen-icon">
+        <img src="img/icons/full-screen-icon.png" alt="full-screen-icon" />
       </button>
-  
+
       <div id="start-overlay" aria-label="Start screen">
         <div class="overlay-bg"></div>
-        <img id="start-btn-img" src="img/icons/start.png" alt="Start game">
+        <img id="start-btn-img" src="img/icons/start.png" alt="Start game" />
         <img id="info-btn-img" src="img/icons/info.png" alt="How to play" />
       </div>
 
       <div id="info-modal" aria-hidden="true">
         <div class="modal-backdrop"></div>
         <div class="modal-content">
-          <img src="img/icons/keys.png" alt="Controls">
+          <img src="img/icons/keys.png" alt="Controls" />
         </div>
       </div>
 
       <div id="end-overlay" aria-hidden="true">
         <div class="end-backdrop"></div>
         <div class="end-content">
-          <img id="end-image" src="" alt="End screen">
-          <img id="restart-btn" src="img/icons/restart.png" alt="Restart">
+          <img id="end-image" src="" alt="End screen" />
+          <img id="restart-btn" src="img/icons/restart.png" alt="Restart" />
         </div>
       </div>
 
       <div id="loading-overlay" aria-hidden="true">
         <div class="spinner"></div>
       </div>
-
     </div>
-
-</body>
-
+    <div id="controls" aria-label="Game controls">
+        <img
+          id="audio-toggle-btn"
+          data-audio-toggle
+          src="img/icons/sound-on.png"
+          data-sound-on="img/icons/sound-on.png"
+          data-sound-off="img/icons/mute.png"
+          alt="Audio on/off"
+        >
+      </div>
+  </body>
 </html>
