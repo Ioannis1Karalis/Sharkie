@@ -1,3 +1,27 @@
+/**
+ * Main controllable character (Sharkie).
+ * Handles movement, animations, attacks, hurt/death states, and camera follow.
+ *
+ * @extends MovableObject
+ *
+ * @property {number} height - Render height in pixels.
+ * @property {number} width  - Render width in pixels.
+ * @property {number} x - Current world x-position.
+ * @property {number} y - Current world y-position.
+ * @property {number} speed - Movement speed in px per tick.
+ *
+ * @property {number} idleTime - Milliseconds accumulated without movement.
+ * @property {number} sleepThreshold - Idle time before sleep animation starts.
+ *
+ * @property {boolean} isAttacking - True while an attack animation plays.
+ * @property {number|null} attackTimer - Interval id for attack animation.
+ *
+ * @property {boolean} isElectrocuted - Temporary state after jellyfish hit.
+ * @property {boolean} isPoisoned - Temporary state after poison hit.
+ * @property {{top:number,left:number,right:number,bottom:number}} offset - Collision padding.
+ *
+ * @property {World} world - Back-reference set by World.setWorld().
+ */
 class Character extends MovableObject {
   height = 280;
   width = 230;
@@ -29,7 +53,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/1.IDLE/15.png",
     "img/2.Sharkie/1.IDLE/16.png",
     "img/2.Sharkie/1.IDLE/17.png",
-    "img/2.Sharkie/1.IDLE/18.png",
+    "img/2.Sharkie/1.IDLE/18.png"
   ];
 
   IMAGES_SWIMMING = [
@@ -38,7 +62,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/3.Swim/3.png",
     "img/2.Sharkie/3.Swim/4.png",
     "img/2.Sharkie/3.Swim/5.png",
-    "img/2.Sharkie/3.Swim/6.png",
+    "img/2.Sharkie/3.Swim/6.png"
   ];
 
   IMAGES_SLEEPING = [
@@ -55,7 +79,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/2.Long_IDLE/i11.png",
     "img/2.Sharkie/2.Long_IDLE/i12.png",
     "img/2.Sharkie/2.Long_IDLE/i13.png",
-    "img/2.Sharkie/2.Long_IDLE/i14.png",
+    "img/2.Sharkie/2.Long_IDLE/i14.png"
   ];
 
   IMAGES_DEAD = [
@@ -70,7 +94,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/6.dead/1.Poisoned/9.png",
     "img/2.Sharkie/6.dead/1.Poisoned/10.png",
     "img/2.Sharkie/6.dead/1.Poisoned/11.png",
-    "img/2.Sharkie/6.dead/1.Poisoned/12.png",
+    "img/2.Sharkie/6.dead/1.Poisoned/12.png"
   ];
 
   IMAGES_POISONED = [
@@ -78,13 +102,13 @@ class Character extends MovableObject {
     "img/2.Sharkie/5.Hurt/1.Poisoned/2.png",
     "img/2.Sharkie/5.Hurt/1.Poisoned/3.png",
     "img/2.Sharkie/5.Hurt/1.Poisoned/4.png",
-    "img/2.Sharkie/5.Hurt/1.Poisoned/5.png",
+    "img/2.Sharkie/5.Hurt/1.Poisoned/5.png"
   ];
 
   IMAGES_ELECTRIC_SHOCK = [
     "img/2.Sharkie/5.Hurt/2.Electric shock/1.png",
     "img/2.Sharkie/5.Hurt/2.Electric shock/2.png",
-    "img/2.Sharkie/5.Hurt/2.Electric shock/3.png",
+    "img/2.Sharkie/5.Hurt/2.Electric shock/3.png"
   ];
 
   IMAGES_BUBBLE_ATTACK = [
@@ -95,7 +119,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
-    "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
+    "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png"
   ];
 
   IMAGES_POISON_BUBBLE_ATTACK = [
@@ -106,11 +130,12 @@ class Character extends MovableObject {
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/5.png",
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/6.png",
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/7.png",
-    "img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png",
+    "img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png"
   ];
 
   world;
 
+  /** Construct and preload all animation frames, then start animation loops. */
   constructor() {
     super().loadImage("img/2.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_REGULAR);
@@ -129,6 +154,10 @@ class Character extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts movement and animation loops.
+   * Handles input, updates camera, selects appropriate animation state.
+   */
   animate() {
     setInterval(() => {
       let moving = false;
@@ -138,18 +167,15 @@ class Character extends MovableObject {
         this.otherDirection = false;
         moving = true;
       }
-
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.x -= this.speed;
         this.otherDirection = true;
         moving = true;
       }
-
       if (this.world.keyboard.UP && this.y > this.world.level.level_top_y) {
         this.y -= this.speed;
         moving = true;
       }
-
       if (
         this.world.keyboard.DOWN &&
         this.y < this.world.level.level_bottom_y
@@ -157,11 +183,8 @@ class Character extends MovableObject {
         this.y += this.speed;
         moving = true;
       }
-
       this.world.camera_x = -this.x + 20;
-
       if (this.isAttacking) moving = true;
-
       this.idleTime = moving ? 0 : this.idleTime + 1000 / 60;
     }, 1000 / 60);
 
@@ -193,6 +216,10 @@ class Character extends MovableObject {
     }, 120);
   }
 
+  /**
+   * Plays the long idle (sleep) animation with an intro and a short loop.
+   * Uses internal indices to advance frames at a fixed cadence.
+   */
   playSleepingAnimation() {
     const frames = this.IMAGES_SLEEPING;
     const total = frames.length;
@@ -219,24 +246,34 @@ class Character extends MovableObject {
     }
   }
 
-  _playOnce(frames, frameMs, done) {
-    if (this._onceTimer) clearInterval(this._onceTimer);
+  /**
+   * Play a sequence once, then invoke a callback.
+   * @param {string[]} frames - Frame asset paths in order.
+   * @param {number} frameMs - Frame duration in milliseconds.
+   * @param {() => void} [done] - Called after the last frame.
+   */
+  playOnce(frames, frameMs, done) {
+    if (this.onceTimer) clearInterval(this.onceTimer);
     let i = 0;
-    this._onceTimer = setInterval(() => {
+    this.onceTimer = setInterval(() => {
       this.img = this.imageCache[frames[i]];
       i++;
       if (i >= frames.length) {
-        clearInterval(this._onceTimer);
-        this._onceTimer = null;
+        clearInterval(this.onceTimer);
+        this.onceTimer = null;
         if (done) done();
       }
     }, frameMs);
   }
 
+  /**
+   * Perform the normal bubble attack and spawn a non-poison bubble.
+   * Does nothing if already attacking.
+   */
   throwNormal() {
     if (this.isAttacking) return;
     this.world?.audio?.playBubble();
-  
+
     let i = 0;
     const frames = this.IMAGES_BUBBLE_ATTACK;
     this.isAttacking = true;
@@ -250,6 +287,10 @@ class Character extends MovableObject {
     }, 80);
   }
 
+  /**
+   * Perform the poison bubble attack, consume ammo, and spawn a poison bubble.
+   * Respects a simple fire lock to avoid overlapping attacks.
+   */
   throwPoison() {
     if (this.world.fireLock || this.world.poisonAmmo <= 0) return;
     this.world?.audio?.playBubble();
@@ -266,9 +307,7 @@ class Character extends MovableObject {
 
         this.world.poisonAmmo -= 1;
         this.world.updatePoisonBar?.();
-
         this.world.spawnBubble(true);
-
         this.isAttacking = false;
         this.world.fireLock = false;
         return;
@@ -277,12 +316,16 @@ class Character extends MovableObject {
     }, step);
   }
 
+  /**
+   * Start the death animation once and then schedule game over overlay.
+   * Idempotent: repeated calls have no effect after the first.
+   */
   startDeathSequence() {
     if (this._deathStarted) return;
     this._deathStarted = true;
 
-    this._playOnce(this.IMAGES_DEAD, 200, () => {
-      this.world?.scheduleEndGame("lose"); 
+    this.playOnce(this.IMAGES_DEAD, 200, () => {
+      this.world?.scheduleEndGame("lose");
     });
   }
 }
