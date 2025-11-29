@@ -302,3 +302,25 @@ h1 {
     height: 100vh;
   }
 }
+
+@media(max-width: 550px) {
+    #start-btn-img {
+        padding-bottom: 20px;
+        width: 190px;
+    }
+
+    #info-btn-img{
+        width: 60px;
+    }
+
+    #audio-toggle-btn {
+        width: 20px;
+        height: 20px;
+    }
+
+    .fs-btn img {
+        width: 20px;
+        height: 20px;
+    }
+
+}

@@ -3,7 +3,7 @@ class Character extends MovableObject {
   width = 230;
   x = 10;
   y = 40;
-  speed = 10;
+  speed = 5;
 
   idleTime = 0;
   sleepThreshold = 4000;
@@ -174,7 +174,7 @@ class Character extends MovableObject {
 
       if (this.isDead()) {
         this.startDeathSequence();
-        return; // nichts anderes mehr abspielen
+        return;
       } else if (this.isAttacking) {
         return;
       } else if (this.isElectrocuted) {
@@ -281,9 +281,8 @@ class Character extends MovableObject {
     if (this._deathStarted) return;
     this._deathStarted = true;
 
-    // _playOnce hast du bereits; sonst gleich unten ersatzweise hinzufügen.
     this._playOnce(this.IMAGES_DEAD, 200, () => {
-      this.world?.scheduleEndGame("lose"); // ← Overlay NACH Dead-Anim
+      this.world?.scheduleEndGame("lose"); 
     });
   }
 }
