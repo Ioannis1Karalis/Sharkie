@@ -66,20 +66,20 @@ class Character extends MovableObject {
   ];
 
   IMAGES_SLEEPING = [
-    "img/2.Sharkie/2.Long_IDLE/i1.png",
-    "img/2.Sharkie/2.Long_IDLE/i2.png",
-    "img/2.Sharkie/2.Long_IDLE/i3.png",
-    "img/2.Sharkie/2.Long_IDLE/i4.png",
-    "img/2.Sharkie/2.Long_IDLE/i5.png",
-    "img/2.Sharkie/2.Long_IDLE/i6.png",
-    "img/2.Sharkie/2.Long_IDLE/i7.png",
-    "img/2.Sharkie/2.Long_IDLE/i8.png",
-    "img/2.Sharkie/2.Long_IDLE/i9.png",
-    "img/2.Sharkie/2.Long_IDLE/i10.png",
-    "img/2.Sharkie/2.Long_IDLE/i11.png",
-    "img/2.Sharkie/2.Long_IDLE/i12.png",
-    "img/2.Sharkie/2.Long_IDLE/i13.png",
-    "img/2.Sharkie/2.Long_IDLE/i14.png",
+    "img/2.Sharkie/2.Long-IDLE/i1.png",
+    "img/2.Sharkie/2.Long-IDLE/i2.png",
+    "img/2.Sharkie/2.Long-IDLE/i3.png",
+    "img/2.Sharkie/2.Long-IDLE/i4.png",
+    "img/2.Sharkie/2.Long-IDLE/i5.png",
+    "img/2.Sharkie/2.Long-IDLE/i6.png",
+    "img/2.Sharkie/2.Long-IDLE/i7.png",
+    "img/2.Sharkie/2.Long-IDLE/i8.png",
+    "img/2.Sharkie/2.Long-IDLE/i9.png",
+    "img/2.Sharkie/2.Long-IDLE/i10.png",
+    "img/2.Sharkie/2.Long-IDLE/i11.png",
+    "img/2.Sharkie/2.Long-IDLE/i12.png",
+    "img/2.Sharkie/2.Long-IDLE/i13.png",
+    "img/2.Sharkie/2.Long-IDLE/i14.png",
   ];
 
   IMAGES_DEAD = [
