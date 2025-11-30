@@ -16,7 +16,7 @@ class PoisonBar extends DrawbleObject {
     "img/5.Marcadores/green/poisoned bubbles/40_ copia 2.png",
     "img/5.Marcadores/green/poisoned bubbles/60_ copia 2.png",
     "img/5.Marcadores/green/poisoned bubbles/80_ copia 2.png",
-    "img/5.Marcadores/green/poisoned bubbles/100_ copia 3.png"
+    "img/5.Marcadores/green/poisoned bubbles/100_ copia 3.png",
   ];
 
   percentage = 100;

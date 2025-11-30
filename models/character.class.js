@@ -53,7 +53,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/1.IDLE/15.png",
     "img/2.Sharkie/1.IDLE/16.png",
     "img/2.Sharkie/1.IDLE/17.png",
-    "img/2.Sharkie/1.IDLE/18.png"
+    "img/2.Sharkie/1.IDLE/18.png",
   ];
 
   IMAGES_SWIMMING = [
@@ -62,7 +62,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/3.Swim/3.png",
     "img/2.Sharkie/3.Swim/4.png",
     "img/2.Sharkie/3.Swim/5.png",
-    "img/2.Sharkie/3.Swim/6.png"
+    "img/2.Sharkie/3.Swim/6.png",
   ];
 
   IMAGES_SLEEPING = [
@@ -79,7 +79,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/2.Long_IDLE/i11.png",
     "img/2.Sharkie/2.Long_IDLE/i12.png",
     "img/2.Sharkie/2.Long_IDLE/i13.png",
-    "img/2.Sharkie/2.Long_IDLE/i14.png"
+    "img/2.Sharkie/2.Long_IDLE/i14.png",
   ];
 
   IMAGES_DEAD = [
@@ -94,7 +94,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/6.dead/1.Poisoned/9.png",
     "img/2.Sharkie/6.dead/1.Poisoned/10.png",
     "img/2.Sharkie/6.dead/1.Poisoned/11.png",
-    "img/2.Sharkie/6.dead/1.Poisoned/12.png"
+    "img/2.Sharkie/6.dead/1.Poisoned/12.png",
   ];
 
   IMAGES_POISONED = [
@@ -102,13 +102,13 @@ class Character extends MovableObject {
     "img/2.Sharkie/5.Hurt/1.Poisoned/2.png",
     "img/2.Sharkie/5.Hurt/1.Poisoned/3.png",
     "img/2.Sharkie/5.Hurt/1.Poisoned/4.png",
-    "img/2.Sharkie/5.Hurt/1.Poisoned/5.png"
+    "img/2.Sharkie/5.Hurt/1.Poisoned/5.png",
   ];
 
   IMAGES_ELECTRIC_SHOCK = [
     "img/2.Sharkie/5.Hurt/2.Electric shock/1.png",
     "img/2.Sharkie/5.Hurt/2.Electric shock/2.png",
-    "img/2.Sharkie/5.Hurt/2.Electric shock/3.png"
+    "img/2.Sharkie/5.Hurt/2.Electric shock/3.png",
   ];
 
   IMAGES_BUBBLE_ATTACK = [
@@ -119,7 +119,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
     "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
-    "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png"
+    "img/2.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
   ];
 
   IMAGES_POISON_BUBBLE_ATTACK = [
@@ -130,7 +130,7 @@ class Character extends MovableObject {
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/5.png",
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/6.png",
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/7.png",
-    "img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png"
+    "img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png",
   ];
 
   world;

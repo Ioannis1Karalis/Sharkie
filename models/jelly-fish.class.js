@@ -30,28 +30,28 @@ class JellyFish extends MovableObject {
     "img/3.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
     "img/3.Enemy/2 Jelly fish/Regular damage/Lila 2.png",
     "img/3.Enemy/2 Jelly fish/Regular damage/Lila 3.png",
-    "img/3.Enemy/2 Jelly fish/Regular damage/Lila 4.png"
+    "img/3.Enemy/2 Jelly fish/Regular damage/Lila 4.png",
   ];
 
   IMAGES_DANGEROUS = [
     "img/3.Enemy/2 Jelly fish/Super dangerous/Green 1.png",
     "img/3.Enemy/2 Jelly fish/Super dangerous/Green 2.png",
     "img/3.Enemy/2 Jelly fish/Super dangerous/Green 3.png",
-    "img/3.Enemy/2 Jelly fish/Super dangerous/Green 4.png"
+    "img/3.Enemy/2 Jelly fish/Super dangerous/Green 4.png",
   ];
 
   IMAGES_DEAD_LILA = [
     "img/3.Enemy/2 Jelly fish/Dead/Lila/L1.png",
     "img/3.Enemy/2 Jelly fish/Dead/Lila/L2.png",
     "img/3.Enemy/2 Jelly fish/Dead/Lila/L3.png",
-    "img/3.Enemy/2 Jelly fish/Dead/Lila/L4.png"
+    "img/3.Enemy/2 Jelly fish/Dead/Lila/L4.png",
   ];
 
   IMAGES_DEAD_GREEN = [
     "img/3.Enemy/2 Jelly fish/Dead/green/g1.png",
     "img/3.Enemy/2 Jelly fish/Dead/green/g2.png",
     "img/3.Enemy/2 Jelly fish/Dead/green/g3.png",
-    "img/3.Enemy/2 Jelly fish/Dead/green/g4.png"
+    "img/3.Enemy/2 Jelly fish/Dead/green/g4.png",
   ];
 
   /**

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "pwbubbles";
+    src: url("fonts/pwbubbles.ttf");
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -6,17 +11,13 @@ body {
   overflow: hidden;
   font-family: "pwbubbles";
   color: white;
+  font-family: "pwbubbles", system-ui, sans-serif;
 }
 
 h1 {
   font-size: 50px;
   text-shadow: 5px 5px 8px rgb(0, 0, 0);
   padding-top: 50px;
-}
-
-@font-face {
-  font-family: "pwbubbles";
-  src: url("/fonts/pwbubbles.ttf");
 }
 
 .background {
