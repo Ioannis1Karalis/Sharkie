@@ -18,6 +18,7 @@ class BackgroundObject extends MovableObject {
    */
   constructor(imagePath, x, y) {
     super().loadImage(imagePath);
+    window.bgLoader?.track(this.img);
     /** @type {number} */ this.x = x;
     /** @type {number} */ this.y = y;
   }

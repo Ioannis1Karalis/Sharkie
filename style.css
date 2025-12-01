@@ -1,6 +1,6 @@
 @font-face {
-    font-family: "pwbubbles";
-    src: url("fonts/pwbubbles.ttf");
+  font-family: "pwbubbles";
+  src: url("fonts/pwbubbles.ttf");
 }
 
 body {
@@ -284,6 +284,24 @@ h1 {
   transform: scale(1.05);
 }
 
+#rotate-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background-image: url("img/background/background.png");
+  z-index: 99999;
+}
+#rotate-overlay.show {
+  display: flex;
+}
+#rotate-overlay img {
+  width: 70vw;
+  max-width: 420px;
+  height: auto;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -302,24 +320,23 @@ h1 {
   }
 }
 
-@media(max-width: 550px) {
-    #start-btn-img {
-        padding-bottom: 20px;
-        width: 190px;
-    }
+@media (max-width: 550px) {
+  #start-btn-img {
+    padding-bottom: 20px;
+    width: 190px;
+  }
 
-    #info-btn-img{
-        width: 60px;
-    }
+  #info-btn-img {
+    width: 60px;
+  }
 
-    #audio-toggle-btn {
-        width: 20px;
-        height: 20px;
-    }
+  #audio-toggle-btn {
+    width: 20px;
+    height: 20px;
+  }
 
-    .fs-btn img {
-        width: 20px;
-        height: 20px;
-    }
-
+  .fs-btn img {
+    width: 20px;
+    height: 20px;
+  }
 }

@@ -66,20 +66,20 @@ class Character extends MovableObject {
   ];
 
   IMAGES_SLEEPING = [
-    "img/2.Sharkie/2.Long-IDLE/i1.png",
-    "img/2.Sharkie/2.Long-IDLE/i2.png",
-    "img/2.Sharkie/2.Long-IDLE/i3.png",
-    "img/2.Sharkie/2.Long-IDLE/i4.png",
-    "img/2.Sharkie/2.Long-IDLE/i5.png",
-    "img/2.Sharkie/2.Long-IDLE/i6.png",
-    "img/2.Sharkie/2.Long-IDLE/i7.png",
-    "img/2.Sharkie/2.Long-IDLE/i8.png",
-    "img/2.Sharkie/2.Long-IDLE/i9.png",
-    "img/2.Sharkie/2.Long-IDLE/i10.png",
-    "img/2.Sharkie/2.Long-IDLE/i11.png",
-    "img/2.Sharkie/2.Long-IDLE/i12.png",
-    "img/2.Sharkie/2.Long-IDLE/i13.png",
-    "img/2.Sharkie/2.Long-IDLE/i14.png",
+    "img/2.Sharkie/2.LongIDLE/1.png",
+    "img/2.Sharkie/2.LongIDLE/2.png",
+    "img/2.Sharkie/2.LongIDLE/3.png",
+    "img/2.Sharkie/2.LongIDLE/4.png",
+    "img/2.Sharkie/2.LongIDLE/5.png",
+    "img/2.Sharkie/2.LongIDLE/6.png",
+    "img/2.Sharkie/2.LongIDLE/7.png",
+    "img/2.Sharkie/2.LongIDLE/8.png",
+    "img/2.Sharkie/2.LongIDLE/9.png",
+    "img/2.Sharkie/2.LongIDLE/10.png",
+    "img/2.Sharkie/2.LongIDLE/11.png",
+    "img/2.Sharkie/2.LongIDLE/12.png",
+    "img/2.Sharkie/2.LongIDLE/13.png",
+    "img/2.Sharkie/2.LongIDLE/14.png",
   ];
 
   IMAGES_DEAD = [

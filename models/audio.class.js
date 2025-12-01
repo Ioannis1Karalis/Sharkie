@@ -48,27 +48,23 @@ class AudioManager {
    */
   setMuted(m) {
     this.muted = !!m;
-    const all = [
+    [
       this.bgm,
       this.sfxBubble,
       this.sfxHurt,
       this.sfxCoin,
       this.sfxPoison,
-    ];
-    all.forEach((a) => {
+    ].forEach((a) => {
       try {
         a.muted = this.muted;
-      } catch (_) {}
+      } catch {}
     });
     if (this.muted) {
       try {
         this.bgm.pause();
-      } catch (_) {}
-    } else {
-      try {
-        this.bgm.play();
-      } catch (_) {}
+      } catch {}
     }
+    // Wichtig: KEIN this.bgm.play() hier!
   }
 
   /**
@@ -78,8 +74,9 @@ class AudioManager {
     if (this.muted) return;
     try {
       this.bgm.currentTime = 0;
-      this.bgm.play();
-    } catch (_) {}
+      const p = this.bgm.play();
+      if (p && p.catch) p.catch(() => {}); // Autoplay-Fehler stillschweigend schlucken
+    } catch {}
   }
 
   /**
@@ -88,7 +85,21 @@ class AudioManager {
   stopBgm() {
     try {
       this.bgm.pause();
-    } catch (_) {}
+    } catch {}
+  }
+
+  /**
+   * Immediately stops the currently playing hurt SFX.
+   * Pauses the audio element (if playing) and resets its playhead to 0.
+   * Safe to call multiple times; it will no-op if already paused.
+   *
+   * @returns {void}
+   */
+  stopHurt() {
+    try {
+      this.sfxHurt.pause();
+      this.sfxHurt.currentTime = 0;
+    } catch {}
   }
 
   /**

@@ -92,12 +92,11 @@ class World {
    */
   swim() {
     setInterval(() => {
+      if (this.gameEnded) return; // ← hinzugefügt
       this.checkCollisions();
       this.checkThrowableObjects();
       this.checkCollectablePickup?.();
-
       this.checkBossTrigger();
-
       this.checkBubbleHits();
       this.cleanupCorpsesAndBubbles?.();
     }, 200);
@@ -438,6 +437,14 @@ class World {
   scheduleEndGame(result) {
     if (this._endScheduled) return;
     this._endScheduled = true;
+    this.gameEnded = true;
+
+    this.audio?.stopBgm?.(); 
+    try {
+      this.audio?.sfxHurt?.pause();
+      this.audio && (this.audio.sfxHurt.currentTime = 0);
+    } catch {}
+
     this.showEndOverlay(result);
   }
 

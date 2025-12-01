@@ -53,6 +53,7 @@ class MovableObject extends DrawbleObject {
    * @returns {void}
    */
   hit(dmg = 5) {
+    if (this.world?.gameEnded) return;
     if (Date.now() - this.lastHit < 600) return;
 
     this.energy = Math.max(0, this.energy - dmg);

@@ -17,19 +17,44 @@ const MUTE_KEY = "AUDIO_MUTED";
  * - Starts background music if not muted
  */
 function init() {
-  canvas = document.getElementById("canvas");
-  window.level1 = createLevel1();
-  world = new World(canvas, keyboard);
-
-  syncAudioButton();
-  const am = window.world?.audio;
-  if (am && !am.muted) {
-    try {
-      am.playBgm();
-    } catch {}
-  }
+    canvas = document.getElementById("canvas");
+    window.level1 = createLevel1();
+    world = new World(canvas, keyboard);
+  
+    // jetzt nach User-Geste: Zustand anwenden + ggf. starten
+    const muted = getMuted();
+    window.audio?.setMuted(muted);
+    if (!muted) { window.audio?.playBgm(); }
+  
+    syncAudioButton(); // Icon nochmal korrekt setzen
 }
-
+  function syncAudioButton() {
+    const btn = document.querySelector("[data-audio-toggle]");
+    if (!btn) return;
+    updateAudioBtn(btn, getMuted()); // nur Icon, KEIN Audiozugriff hier
+  }
+  
+  window.bgLoader = {
+    pending: 0,
+    started: false,
+    start() { this.started = true; if (typeof showLoader === 'function') showLoader(); },
+    track(img) {
+      if (!img) return;
+      this.pending++;
+      const done = () => {
+        img.removeEventListener('load', done);
+        img.removeEventListener('error', done);
+        if (--this.pending <= 0 && this.started) {
+          if (typeof hideLoader === 'function') hideLoader(0);
+          document.getElementById('game-container')?.classList.add('started');
+        }
+      };
+      // Falls aus dem Cache schon fertig:
+      if (img.complete && img.naturalWidth > 0) { done(); return; }
+      img.addEventListener('load', done);
+      img.addEventListener('error', done);
+    }
+  };
 /**
  * Returns whether audio is currently muted (from LocalStorage).
  * @returns {boolean} True if muted, else false.
@@ -79,16 +104,18 @@ function syncAudioButton() {
  * @returns {void}
  */
 function wireAudioButton() {
-  const btn = document.querySelector("[data-audio-toggle]");
-  if (!btn) return;
-  btn.style.pointerEvents = "auto";
-  btn.addEventListener("click", () => {
-    const muted = !getMuted();
-    setMuted(muted);
-    updateAudioBtn(btn, muted);
-  });
-}
-
+    const btn = document.querySelector('[data-audio-toggle]');
+    if (!btn) return;
+    btn.style.pointerEvents = "auto";
+    btn.addEventListener("click", () => {
+      const muted = !getMuted();
+      setMuted(muted);
+      updateAudioBtn(btn, muted);
+  
+      // ← Neu: Wenn gerade auf "Sound an" gewechselt wurde, Musik starten
+      if (!muted) { try { (window.audio || window.world?.audio)?.playBgm(); } catch {} }
+    });
+  }
 /**
  * Pauses/resumes background music when the page/tab visibility changes.
  * Respects the persisted mute setting.
@@ -157,10 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
       startLayer?.setAttribute("aria-hidden", "true");
 
       if (typeof showLoader === "function") showLoader();
+      
+      window.bgLoader?.start();
       init();
       if (world) {
         world.onFirstFrame = () => {
-          hideLoader();
+          hideLoader(1200);
           document.getElementById("game-container")?.classList.add("started");
         };
       }
@@ -220,3 +249,23 @@ window.addEventListener("keyup", (e) => {
   if (e.keyCode == 32) keyboard.SPACE = false;
   if (e.keyCode == 68) keyboard.D = false;
 });
+
+function updateRotateOverlay(){
+    const overlay = document.getElementById('rotate-overlay');
+    if (!overlay) return;
+    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+    const tooNarrow  = window.innerWidth < 500;
+    const show = isPortrait && tooNarrow;
+  
+    overlay.classList.toggle('show', show);
+    overlay.setAttribute('aria-hidden', String(!show));
+  
+    try{
+      if (show) window.audio?.stopBgm?.();
+      else if (localStorage.getItem('AUDIO_MUTED')!=='1') window.audio?.playBgm?.();
+    }catch{}
+  }
+  
+  document.addEventListener('DOMContentLoaded', updateRotateOverlay);
+  window.addEventListener('resize', updateRotateOverlay);
+  window.addEventListener('orientationchange', () => setTimeout(updateRotateOverlay, 150));
