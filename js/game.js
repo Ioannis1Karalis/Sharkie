@@ -21,17 +21,16 @@ function init() {
     window.level1 = createLevel1();
     world = new World(canvas, keyboard);
   
-    // jetzt nach User-Geste: Zustand anwenden + ggf. starten
     const muted = getMuted();
     window.audio?.setMuted(muted);
     if (!muted) { window.audio?.playBgm(); }
   
-    syncAudioButton(); // Icon nochmal korrekt setzen
+    syncAudioButton(); 
 }
   function syncAudioButton() {
     const btn = document.querySelector("[data-audio-toggle]");
     if (!btn) return;
-    updateAudioBtn(btn, getMuted()); // nur Icon, KEIN Audiozugriff hier
+    updateAudioBtn(btn, getMuted());
   }
   
   window.bgLoader = {
@@ -253,19 +252,86 @@ window.addEventListener("keyup", (e) => {
 function updateRotateOverlay(){
     const overlay = document.getElementById('rotate-overlay');
     if (!overlay) return;
-    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-    const tooNarrow  = window.innerWidth < 500;
-    const show = isPortrait && tooNarrow;
   
-    overlay.classList.toggle('show', show);
+    const isMobile    = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    const isPortrait  = window.matchMedia('(orientation: portrait)').matches;
+  
+    const show = isMobile && isPortrait;
     overlay.setAttribute('aria-hidden', String(!show));
   
-    try{
+    try {
       if (show) window.audio?.stopBgm?.();
       else if (localStorage.getItem('AUDIO_MUTED')!=='1') window.audio?.playBgm?.();
-    }catch{}
+    } catch {}
   }
   
   document.addEventListener('DOMContentLoaded', updateRotateOverlay);
   window.addEventListener('resize', updateRotateOverlay);
   window.addEventListener('orientationchange', () => setTimeout(updateRotateOverlay, 150));
+
+  function tcGetKb() {
+    return window.keyboard || window.world?.keyboard
+      || (typeof keyboard !== 'undefined' ? keyboard : null);
+  }
+  
+  function tcSetKey(key, val) {
+    const k = tcGetKb();
+    if (k && key in k) k[key] = !!val;
+  }
+  
+  function tcBindHold(el, key) {
+    const down = (e) => { e.preventDefault(); try{el.setPointerCapture?.(e.pointerId);}catch{} tcSetKey(key,true); };
+    const up   = (e) => { e.preventDefault(); try{el.releasePointerCapture?.(e.pointerId);}catch{} tcSetKey(key,false); };
+    el.addEventListener('pointerdown', down, { passive:false });
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
+    el.addEventListener('pointerleave', up);
+  }
+  
+  function tcReleaseAll() {
+    ['UP','DOWN','LEFT','RIGHT','SPACE','D'].forEach(k => tcSetKey(k,false));
+  }
+  
+  function tcShouldShow() {
+    const mql = window.matchMedia('(orientation: landscape) and (hover: none) and (pointer: coarse)');
+    const started = document.getElementById('game-container')?.classList.contains('started')
+                 || document.getElementById('start-overlay')?.classList.contains('hide');
+    const rotateShown = document.getElementById('rotate-overlay')?.classList.contains('show');
+    return mql.matches && started && !rotateShown;
+  }
+  
+  function tcUpdate() {
+    const tc = document.getElementById('touch-controls');
+    if (!tc) return;
+    tc.hidden = !tcShouldShow();
+  }
+  
+  function tcWireObservers() {
+    const startedEl = document.getElementById('game-container');
+    const mql = window.matchMedia('(orientation: landscape) and (hover: none) and (pointer: coarse)');
+    mql.addEventListener('change', tcUpdate);
+    window.addEventListener('resize', tcUpdate);
+    if (startedEl) new MutationObserver(tcUpdate).observe(startedEl,{attributes:true,attributeFilter:['class']});
+  }
+  
+  function tcWireGlobalReleases(tc) {
+    window.addEventListener('pointerup', tcReleaseAll);
+    window.addEventListener('pointercancel', tcReleaseAll);
+    window.addEventListener('blur', tcReleaseAll);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) tcReleaseAll(); });
+    tc.addEventListener('contextmenu', e => e.preventDefault());
+  }
+  
+  function tcWireButtons(tc) {
+    tc.querySelectorAll('[data-key]').forEach(btn => tcBindHold(btn, btn.dataset.key));
+  }
+  
+  function initTouchControls() {
+    const tc = document.getElementById('touch-controls');
+    if (!tc) return;
+    tcWireButtons(tc);
+    tcWireObservers();
+    tcWireGlobalReleases(tc);
+    tcUpdate();
+  }
+  document.addEventListener('DOMContentLoaded', initTouchControls);

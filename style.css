@@ -293,13 +293,209 @@ h1 {
   background-image: url("img/background/background.png");
   z-index: 99999;
 }
+
 #rotate-overlay.show {
   display: flex;
 }
+
 #rotate-overlay img {
   width: 70vw;
   max-width: 420px;
   height: auto;
+}
+
+#fs-nudge {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 50000;
+}
+
+#fs-nudge.show {
+  display: flex;
+}
+
+#fs-nudge button {
+  font: inherit;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+  html,
+  body {
+    height: 100svh;
+    width: 100svw;
+    overflow: hidden;
+  }
+  h1,
+  .fs-btn {
+    display: none !important;
+  }
+  .background {
+    display: none !important;
+  }
+
+  #rotate-overlay {
+    display: none !important;
+  }
+
+  #game-container {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  #canvas {
+    width: 100svw !important;
+    height: 100svh !important;
+    max-width: 100svw;
+    max-height: 100svh;
+    display: block;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+  #controls {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 10000;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 6px;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+    border-radius: 999px;
+  }
+
+  #game-container.started + #controls {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #audio-toggle-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  #start-overlay {
+    background-image: url("img/background/background.png");
+  }
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+  #touch-controls {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  #touch-controls[hidden] {
+    display: none;
+  }
+
+  .tc-left,
+  .tc-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .tc-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 2px;
+  }
+  .tc-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    border: 0;
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 20px;
+    display: grid;
+    place-items: center;
+    pointer-events: auto;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .tc-btn:active {
+    transform: scale(0.96);
+  }
+
+  .tc-up {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .tc-left {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .tc-down {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .tc-right {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .tc-btn.tc-a,
+  .tc-btn.tc-b {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    font-weight: 700;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) {
+  #rotate-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    z-index: 99999;
+    background-image: url("img/background/background.png");
+  }
+
+  #game-container,
+  h1,
+  #controls {
+    display: none !important;
+  }
+  #rotate-overlay img {
+    width: 70vw;
+    max-width: 420px;
+    height: auto;
+  }
 }
 
 @keyframes spin {
@@ -338,5 +534,25 @@ h1 {
   .fs-btn img {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (max-width: 550px) {
+  #rotate-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    z-index: 99999;
+    background-image: url("img/background/background.png");
+  }
+
+  #game-container,
+  #controls,
+  h1,
+  .background {
+    display: none !important;
   }
 }

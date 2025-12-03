@@ -66,18 +66,35 @@
       </div>
     </div>
     <div id="controls" aria-label="Game controls">
-        <img
-          id="audio-toggle-btn"
-          data-audio-toggle
-          src="img/icons/sound-on.png"
-          data-sound-on="img/icons/sound-on.png"
-          data-sound-off="img/icons/mute.png"
-          alt="Audio on/off"
-        >
-      </div>
+      <img
+        id="audio-toggle-btn"
+        data-audio-toggle
+        src="img/icons/sound-on.png"
+        data-sound-on="img/icons/sound-on.png"
+        data-sound-off="img/icons/mute.png"
+        alt="Audio on/off"
+      />
+    </div>
 
-      <div id="rotate-overlay" aria-hidden="true">
-        <img src="img/icons/rotate.png" alt="Please rotate your device">
+    <div id="touch-controls" aria-label="Touch controls" hidden>
+      <div class="tc-left">
+        <div class="tc-dpad">
+          <button class="tc-btn tc-up" data-key="UP" aria-label="Up">▲</button>
+          <button class="tc-btn tc-left" data-key="LEFT" aria-label="Left">◀</button>
+          <button class="tc-btn tc-down" data-key="DOWN" aria-label="Down">▼</button>
+          <button class="tc-btn tc-right" data-key="RIGHT" aria-label="Right">▶</button>
+        </div>
       </div>
+      <div class="tc-right">
+        <button class="tc-btn tc-a" data-key="D" aria-label="Bubble">B</button>
+        <button class="tc-btn tc-b" data-key="SPACE" aria-label="Poison">
+          P
+        </button>
+      </div>
+    </div>
+
+    <div id="rotate-overlay" aria-hidden="true">
+      <img src="img/icons/rotate.png" alt="Please rotate your device"/>
+    </div>
   </body>
 </html>

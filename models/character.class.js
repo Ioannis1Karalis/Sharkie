@@ -183,7 +183,7 @@ class Character extends MovableObject {
         this.y += this.speed;
         moving = true;
       }
-      this.world.camera_x = -this.x + 20;
+      this.world.camera_x = -this.x + 140;
       if (this.isAttacking) moving = true;
       this.idleTime = moving ? 0 : this.idleTime + 1000 / 60;
     }, 1000 / 60);
