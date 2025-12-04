@@ -556,3 +556,22 @@ h1 {
     display: none !important;
   }
 }
+
+#game-container, #canvas,
+#touch-controls, #touch-controls .tc-btn,
+#controls, #controls img {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#touch-controls .tc-btn {
+  touch-action: none;
+}
+
+img, canvas {
+  -webkit-user-drag: none;
+  user-drag: none;
+}

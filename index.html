@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="style.css" />
     <title>Sharkie</title>
     <link rel="icon" href="img/5.Marcadores/1. Coins/1.png" />
@@ -42,8 +43,8 @@
 
       <div id="start-overlay" aria-label="Start screen">
         <div class="overlay-bg"></div>
-        <img id="start-btn-img" src="img/icons/start.png" alt="Start game" />
-        <img id="info-btn-img" src="img/icons/info.png" alt="How to play" />
+        <img id="start-btn-img" draggable="false" src="img/icons/start.png" alt="Start game" />
+        <img id="info-btn-img" draggable="false" src="img/icons/info.png" alt="How to play" />
       </div>
 
       <div id="info-modal" aria-hidden="true">
@@ -56,8 +57,8 @@
       <div id="end-overlay" aria-hidden="true">
         <div class="end-backdrop"></div>
         <div class="end-content">
-          <img id="end-image" src="" alt="End screen" />
-          <img id="restart-btn" src="img/icons/restart.png" alt="Restart" />
+          <img id="end-image" draggable="false" src="" alt="End screen" />
+          <img id="restart-btn" draggable="false" src="img/icons/restart.png" alt="Restart" />
         </div>
       </div>
 
@@ -68,6 +69,7 @@
     <div id="controls" aria-label="Game controls">
       <img
         id="audio-toggle-btn"
+        draggable="false"
         data-audio-toggle
         src="img/icons/sound-on.png"
         data-sound-on="img/icons/sound-on.png"
@@ -80,9 +82,15 @@
       <div class="tc-left">
         <div class="tc-dpad">
           <button class="tc-btn tc-up" data-key="UP" aria-label="Up">▲</button>
-          <button class="tc-btn tc-left" data-key="LEFT" aria-label="Left">◀</button>
-          <button class="tc-btn tc-down" data-key="DOWN" aria-label="Down">▼</button>
-          <button class="tc-btn tc-right" data-key="RIGHT" aria-label="Right">▶</button>
+          <button class="tc-btn tc-left" data-key="LEFT" aria-label="Left">
+            ◀
+          </button>
+          <button class="tc-btn tc-down" data-key="DOWN" aria-label="Down">
+            ▼
+          </button>
+          <button class="tc-btn tc-right" data-key="RIGHT" aria-label="Right">
+            ▶
+          </button>
         </div>
       </div>
       <div class="tc-right">
@@ -94,7 +102,7 @@
     </div>
 
     <div id="rotate-overlay" aria-hidden="true">
-      <img src="img/icons/rotate.png" alt="Please rotate your device"/>
+      <img src="img/icons/rotate.png" alt="Please rotate your device" />
     </div>
   </body>
 </html>
