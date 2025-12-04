@@ -258,19 +258,17 @@ h1 {
 #controls {
   width: 100%;
   max-width: 880px;
-  margin-top: 8px;
+  margin: 8px auto 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
+  opacity: 1;
+  pointer-events: auto; 
 }
 
 #game-container.started + #controls {
-  opacity: 1;
-  pointer-events: auto;
+  justify-content: flex-start;
 }
 
 #audio-toggle-btn {
@@ -337,6 +335,7 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  padding-top: 20px;
 }
 .legal-links a {
   color: #fff;
@@ -415,9 +414,8 @@ h1 {
     width: auto;
     max-width: none;
     margin: 0;
-    padding: 6px;
-    opacity: 0;
-    pointer-events: none;
+    padding: 6px 8px;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(3px);
     border-radius: 999px;

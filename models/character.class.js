@@ -330,7 +330,14 @@ class Character extends MovableObject {
     }, step);
   }
 
-  finSlap() {
+/**
+ * Executes the close-range “fin slap” attack.
+ * Locks other attacks via `isAttacking`, advances the slap frames,
+ * and applies melee hits on each frame. Resets latch when finished.
+ * Uses `IMAGES_FIN_SLAP` and `applyMeleeHits()` per tick.
+ * @returns {void}
+ */
+finSlap() {
     if (this.isAttacking) return;
     this.isAttacking = true;
   
@@ -348,7 +355,14 @@ class Character extends MovableObject {
       }
     }, step);
   }
-
+  
+  /**
+   * Computes the axis-aligned melee hitbox in front of Sharkie.
+   * The box spans ~60% of the character’s height and extends forward by
+   * `range + 20` pixels, respecting the facing (`otherDirection`).
+   * @param {number} [range=this.meleeRange] Forward reach in pixels.
+   * @returns {{x:number,y:number,width:number,height:number}} World-space AABB.
+   */
   getMeleeRect(range = this.meleeRange) {
     const h = this.height * 0.6;
     const y = this.y + (this.height - h) / 2;
@@ -361,6 +375,12 @@ class Character extends MovableObject {
     }
   }
   
+  /**
+   * Builds an enemy’s collision rectangle, honoring its `offset` paddings
+   * (top/left/right/bottom). Falls back to zero offsets when missing.
+   * @param {MovableObject} e Enemy instance with x/y/width/height and optional offset.
+   * @returns {{x:number,y:number,width:number,height:number}} Adjusted world-space AABB.
+   */
   getEnemyRect(e) {
     const o = e.offset || { top: 0, left: 0, right: 0, bottom: 0 };
     const w = Math.max(0, e.width - o.left - o.right);
@@ -368,11 +388,23 @@ class Character extends MovableObject {
     return { x: e.x + o.left, y: e.y + o.top, width: w, height: h };
   }
   
+  /**
+   * Simple AABB intersection test for two rectangles.
+   * @param {{x:number,y:number,width:number,height:number}} a
+   * @param {{x:number,y:number,width:number,height:number}} b
+   * @returns {boolean} True if the rectangles overlap.
+   */
   rectOverlap(a, b) {
     return a.x < b.x + b.width && a.x + a.width > b.x &&
            a.y < b.y + b.height && a.y + a.height > b.y;
   }
-
+  
+  /**
+   * Applies melee damage to enemies overlapping the current melee hitbox.
+   * Kills JellyFish only when NOT dangerous, and kills PufferFish (green/red).
+   * Invokes `die()` when available on the enemy instance.
+   * @returns {void}
+   */
   applyMeleeHits() {
     const enemies = this.world?.level?.enemies || [];
     const m = this.getMeleeRect();
