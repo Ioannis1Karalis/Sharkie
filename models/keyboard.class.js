@@ -18,4 +18,5 @@ class Keyboard extends MovableObject {
   /** @type {boolean} */ DOWN = false;
   /** @type {boolean} */ SPACE = false;
   /** @type {boolean} */ D = false;
+  /** @type {boolean} */ F = false;
 }

@@ -54,6 +54,7 @@ class World {
   firedD = false;
   firedSpace = false;
   fireLock = false;
+  firedF = false;
 
   endboss = null;
   endbossTriggered = false;
@@ -165,6 +166,11 @@ class World {
       }
     }
     if (!this.keyboard.SPACE) this.firedSpace = false;
+    if (this.keyboard.F && !this.firedF) {
+        this.firedF = true;
+        if (this.character.finSlap) this.character.finSlap();
+      }
+      if (!this.keyboard.F) this.firedF = false;
   }
 
   /** Update poison bar percentage from current ammo. */

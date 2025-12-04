@@ -35,6 +35,8 @@ class Character extends MovableObject {
   isAttacking = false;
   attackTimer = null;
 
+  meleeRange = 10;
+
   IMAGES_REGULAR = [
     "img/2.Sharkie/1.IDLE/1.png",
     "img/2.Sharkie/1.IDLE/2.png",
@@ -133,6 +135,17 @@ class Character extends MovableObject {
     "img/2.Sharkie/4.Attack/Bubble trap/For Whale/8.png",
   ];
 
+  IMAGES_FIN_SLAP = [
+    "img/2.Sharkie/4.Attack/Fin slap/1.png",
+    "img/2.Sharkie/4.Attack/Fin slap/2.png",
+    "img/2.Sharkie/4.Attack/Fin slap/3.png",
+    "img/2.Sharkie/4.Attack/Fin slap/4.png",
+    "img/2.Sharkie/4.Attack/Fin slap/5.png",
+    "img/2.Sharkie/4.Attack/Fin slap/6.png",
+    "img/2.Sharkie/4.Attack/Fin slap/7.png",
+    "img/2.Sharkie/4.Attack/Fin slap/8.png",
+  ];
+
   world;
 
   /** Construct and preload all animation frames, then start animation loops. */
@@ -146,6 +159,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_ELECTRIC_SHOCK);
     this.loadImages(this.IMAGES_BUBBLE_ATTACK);
     this.loadImages(this.IMAGES_POISON_BUBBLE_ATTACK);
+    this.loadImages(this.IMAGES_FIN_SLAP);
 
     this.isElectrocuted = false;
     this.isPoisoned = false;
@@ -314,6 +328,64 @@ class Character extends MovableObject {
       }
       this.img = this.imageCache[frames[i++]];
     }, step);
+  }
+
+  finSlap() {
+    if (this.isAttacking) return;
+    this.isAttacking = true;
+  
+    const frames = this.IMAGES_FIN_SLAP;
+    let i = 0;
+    const step = 70;
+  
+    const timer = setInterval(() => {
+      this.img = this.imageCache[frames[i]] || this.img;
+      this.applyMeleeHits();
+      i++;
+      if (i >= frames.length) {
+        clearInterval(timer);
+        this.isAttacking = false;
+      }
+    }, step);
+  }
+
+  getMeleeRect(range = this.meleeRange) {
+    const h = this.height * 0.6;
+    const y = this.y + (this.height - h) / 2;
+    if (this.otherDirection) {
+      const x = this.x - range;
+      return { x, y, width: range + 20, height: h };
+    } else {
+      const x = this.x + this.width - 20;
+      return { x, y, width: range + 20, height: h };
+    }
+  }
+  
+  getEnemyRect(e) {
+    const o = e.offset || { top: 0, left: 0, right: 0, bottom: 0 };
+    const w = Math.max(0, e.width - o.left - o.right);
+    const h = Math.max(0, e.height - o.top - o.bottom);
+    return { x: e.x + o.left, y: e.y + o.top, width: w, height: h };
+  }
+  
+  rectOverlap(a, b) {
+    return a.x < b.x + b.width && a.x + a.width > b.x &&
+           a.y < b.y + b.height && a.y + a.height > b.y;
+  }
+
+  applyMeleeHits() {
+    const enemies = this.world?.level?.enemies || [];
+    const m = this.getMeleeRect();
+    for (let e of enemies) {
+      const r = this.getEnemyRect(e);
+      if (!this.rectOverlap(m, r)) continue;
+  
+      if (e instanceof JellyFish && !e.isDangerous && typeof e.die === 'function') {
+        e.die();
+      } else if ((e instanceof PufferFishGreen || e instanceof PufferFishRed) && typeof e.die === 'function') {
+        e.die();
+      }
+    }
   }
 
   /**
