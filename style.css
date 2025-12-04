@@ -330,6 +330,45 @@ h1 {
   cursor: pointer;
 }
 
+.legal-links {
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.legal-links a {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.85;
+}
+.legal-links a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+#rotate-overlay .legal-rotate {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+}
+#rotate-overlay .legal-rotate a {
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 360px) {
+  .legal-links,
+  #rotate-overlay .legal-rotate {
+    font-size: 13px;
+  }
+}
+
 @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
   html,
   body {
@@ -557,9 +596,12 @@ h1 {
   }
 }
 
-#game-container, #canvas,
-#touch-controls, #touch-controls .tc-btn,
-#controls, #controls img {
+#game-container,
+#canvas,
+#touch-controls,
+#touch-controls .tc-btn,
+#controls,
+#controls img {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -571,7 +613,7 @@ h1 {
   touch-action: none;
 }
 
-img, canvas {
+img,
+canvas {
   -webkit-user-drag: none;
-  user-drag: none;
 }
