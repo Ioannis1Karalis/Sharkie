@@ -29,7 +29,6 @@ h1 {
   background-image: url("img/background/background.png");
   background-size: cover;
   background-position: center;
-  filter: blur(3px);
   z-index: -1;
 }
 

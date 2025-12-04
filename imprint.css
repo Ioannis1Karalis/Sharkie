@@ -32,8 +32,6 @@ p {
 
 }
 
-
-
 #imprint, #privacy {
     display: flex;
     flex-direction: column;
