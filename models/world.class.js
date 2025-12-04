@@ -92,8 +92,8 @@ class World {
    * collisions, throwing, pickups, boss trigger, projectile cleanup.
    */
   swim() {
-    setInterval(() => {
-      if (this.gameEnded) return; // ← hinzugefügt
+    this.swimTimer = setInterval(() => {
+      if (this.gameEnded) return;
       this.checkCollisions();
       this.checkThrowableObjects();
       this.checkCollectablePickup?.();
@@ -366,33 +366,51 @@ class World {
    * clears frame, updates boss AI, draws background, HUD, actors, and projectiles.
    */
   draw() {
-    if (!this._loaderNotified && typeof this.onFirstFrame === "function") {
-      this._loaderNotified = true;
+    if (!this.loaderNotified && typeof this.onFirstFrame === "function") {
+      this.loaderNotified = true;
       this.onFirstFrame();
     }
+    if (this.stopped) return; 
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+  
     if (this.endboss && typeof this.endboss.update === "function") {
       this.endboss.update(this.character);
     }
-
+  
     this.ctx.translate(this.camera_x, 0);
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.collectableItems);
     this.addToMap(this.barrier);
-
+  
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.poisonBar);
     this.addToMap(this.healthBar);
     this.addToMap(this.coinsBar);
-
+  
     this.ctx.translate(this.camera_x, 0);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.bubbles);
     this.ctx.translate(-this.camera_x, 0);
-    requestAnimationFrame(() => this.draw());
+  
+    this.rafId = requestAnimationFrame(() => this.draw());
+  }
+
+  destroy() {
+    this.gameEnded = true;
+    this._stopped = true;
+  
+    try { if (this.swimTimer) clearInterval(this.swimTimer); } catch {}
+    try { if (this.rafId) cancelAnimationFrame(this.rafId); } catch {}
+  
+    try { this.character?.stopTimers?.(); } catch {}
+  
+    try {
+      this.audio?.stopBgm?.();
+      this.audio?.stopHurt?.();
+      if (this.audio?.sfxHurt) { this.audio.sfxHurt.pause(); this.audio.sfxHurt.currentTime = 0; }
+    } catch {}
   }
 
   /**
@@ -508,10 +526,16 @@ class World {
   bindRestart(overlay) {
     const restart = overlay.querySelector("#restart-btn");
     const backdrop = overlay.querySelector(".end-backdrop");
+  
     const doRestart = () => {
-      sessionStorage.setItem("AUTO_START", "1");
-      location.reload();
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+  
+      try { this.destroy(); } catch {}
+  
+      resetGameInPlace();
     };
+  
     restart?.addEventListener("click", doRestart);
     backdrop?.addEventListener("click", doRestart);
   }

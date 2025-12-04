@@ -173,6 +173,9 @@ class Character extends MovableObject {
    * Handles input, updates camera, selects appropriate animation state.
    */
   animate() {
+    if (this.moveTimer)  clearInterval(this.moveTimer);
+    if (this.animTimer)  clearInterval(this.animTimer);
+
     setInterval(() => {
       let moving = false;
 
@@ -229,6 +232,12 @@ class Character extends MovableObject {
       }
     }, 120);
   }
+
+  stopTimers() {
+  try { if (this.moveTimer) clearInterval(this.moveTimer); } catch {}
+  try { if (this.animTimer) clearInterval(this.animTimer); } catch {}
+  try { if (this.onceTimer) clearInterval(this.onceTimer); } catch {}
+}
 
   /**
    * Plays the long idle (sleep) animation with an intro and a short loop.

@@ -251,12 +251,20 @@ window.addEventListener("keyup", (e) => {
   if (e.keyCode == 70) keyboard.F = false;
 });
 
+/**
+ * Updates the "rotate device" overlay based on device/orientation.
+ * - Shows overlay on mobile portrait, hides otherwise.
+ * - Stops/starts BGM accordingly (respects persisted mute flag).
+ *
+ * Side effects: toggles aria-hidden and calls audio methods inside try/catch.
+ * @returns {void}
+ */
 function updateRotateOverlay(){
     const overlay = document.getElementById('rotate-overlay');
     if (!overlay) return;
   
-    const isMobile    = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    const isPortrait  = window.matchMedia('(orientation: portrait)').matches;
+    const isMobile   = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
   
     const show = isMobile && isPortrait;
     overlay.setAttribute('aria-hidden', String(!show));
@@ -267,20 +275,34 @@ function updateRotateOverlay(){
     } catch {}
   }
   
-  document.addEventListener('DOMContentLoaded', updateRotateOverlay);
-  window.addEventListener('resize', updateRotateOverlay);
-  window.addEventListener('orientationchange', () => setTimeout(updateRotateOverlay, 150));
-
+  /**
+   * Returns the active Keyboard instance used by the game.
+   * Tries window.keyboard, then window.world.keyboard, then global `keyboard`.
+   * @returns {Keyboard|null}
+   */
   function tcGetKb() {
     return window.keyboard || window.world?.keyboard
       || (typeof keyboard !== 'undefined' ? keyboard : null);
   }
   
+  /**
+   * Sets a key flag on the active Keyboard instance.
+   * @param {'UP'|'DOWN'|'LEFT'|'RIGHT'|'SPACE'|'D'|'F'} key - Logical key name.
+   * @param {boolean} val - Desired pressed state.
+   * @returns {void}
+   */
   function tcSetKey(key, val) {
     const k = tcGetKb();
     if (k && key in k) k[key] = !!val;
   }
   
+  /**
+   * Binds press-and-hold semantics to a button using Pointer Events.
+   * Prevents scrolling/selection; sets/releases key on down/up/cancel/leave.
+   * @param {HTMLElement} el - The button element to bind.
+   * @param {'UP'|'DOWN'|'LEFT'|'RIGHT'|'SPACE'|'D'|'F'} key - Keyboard flag to drive.
+   * @returns {void}
+   */
   function tcBindHold(el, key) {
     const down = (e) => { e.preventDefault(); try{el.setPointerCapture?.(e.pointerId);}catch{} tcSetKey(key,true); };
     const up   = (e) => { e.preventDefault(); try{el.releasePointerCapture?.(e.pointerId);}catch{} tcSetKey(key,false); };
@@ -290,10 +312,19 @@ function updateRotateOverlay(){
     el.addEventListener('pointerleave', up);
   }
   
+  /**
+   * Releases all touch-control keys (safety on pointerup/cancel/blur/hidden).
+   * @returns {void}
+   */
   function tcReleaseAll() {
     ['UP','DOWN','LEFT','RIGHT','SPACE','D'].forEach(k => tcSetKey(k,false));
   }
   
+  /**
+   * Decides whether touch controls should be visible.
+   * Visible when: landscape + coarse pointer + game started + rotate overlay hidden.
+   * @returns {boolean}
+   */
   function tcShouldShow() {
     const mql = window.matchMedia('(orientation: landscape) and (hover: none) and (pointer: coarse)');
     const started = document.getElementById('game-container')?.classList.contains('started')
@@ -302,12 +333,20 @@ function updateRotateOverlay(){
     return mql.matches && started && !rotateShown;
   }
   
+  /**
+   * Applies the current visibility to the #touch-controls element.
+   * @returns {void}
+   */
   function tcUpdate() {
     const tc = document.getElementById('touch-controls');
     if (!tc) return;
     tc.hidden = !tcShouldShow();
   }
   
+  /**
+   * Subscribes to orientation/resize and 'started' class changes to recompute visibility.
+   * @returns {void}
+   */
   function tcWireObservers() {
     const startedEl = document.getElementById('game-container');
     const mql = window.matchMedia('(orientation: landscape) and (hover: none) and (pointer: coarse)');
@@ -316,6 +355,12 @@ function updateRotateOverlay(){
     if (startedEl) new MutationObserver(tcUpdate).observe(startedEl,{attributes:true,attributeFilter:['class']});
   }
   
+  /**
+   * Wires global releases so keys don't get stuck.
+   * Adds pointerup/cancel/blur/visibilitychange handlers and disables context menu.
+   * @param {HTMLElement} tc - The root touch-controls container.
+   * @returns {void}
+   */
   function tcWireGlobalReleases(tc) {
     window.addEventListener('pointerup', tcReleaseAll);
     window.addEventListener('pointercancel', tcReleaseAll);
@@ -324,10 +369,20 @@ function updateRotateOverlay(){
     tc.addEventListener('contextmenu', e => e.preventDefault());
   }
   
+  /**
+   * Binds hold behavior to all buttons inside the touch-controls container.
+   * @param {HTMLElement} tc - The root touch-controls container.
+   * @returns {void}
+   */
   function tcWireButtons(tc) {
     tc.querySelectorAll('[data-key]').forEach(btn => tcBindHold(btn, btn.dataset.key));
   }
   
+  /**
+   * Initializes the mobile touch controls (wiring, observers, visibility).
+   * Safe no-op when #touch-controls is missing.
+   * @returns {void}
+   */
   function initTouchControls() {
     const tc = document.getElementById('touch-controls');
     if (!tc) return;
@@ -336,4 +391,18 @@ function updateRotateOverlay(){
     tcWireGlobalReleases(tc);
     tcUpdate();
   }
-  document.addEventListener('DOMContentLoaded', initTouchControls);
+  
+  /**
+   * Restarts the game in-place without reloading the page or showing the start screen.
+   * Hides start overlay, calls init(), ensures .started class is set on #game-container.
+   * @returns {void}
+   */
+  function resetGameInPlace() {
+    const startLayer = document.getElementById("start-overlay");
+    startLayer?.classList.add("hide");
+    startLayer?.setAttribute("aria-hidden", "true");
+  
+    init();
+  
+    document.getElementById("game-container")?.classList.add("started");
+  }
