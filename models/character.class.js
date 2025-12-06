@@ -349,6 +349,7 @@ class Character extends MovableObject {
 finSlap() {
     if (this.isAttacking) return;
     this.isAttacking = true;
+    this.world?.audio?.playFinSlap?.();
   
     const frames = this.IMAGES_FIN_SLAP;
     let i = 0;

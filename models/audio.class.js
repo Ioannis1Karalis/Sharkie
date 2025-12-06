@@ -38,6 +38,11 @@ class AudioManager {
     );
     this.sfxPoison.volume = 0.9;
 
+    /** @type {HTMLAudioElement} */ this.sfxFinSlap = new Audio(
+      "audio/fin-slap.mp3"
+    );
+    this.sfxFinSlap.volume = 0.9;
+
     /** Whether all audio is muted. @type {boolean} */
     this.muted = false;
   }
@@ -64,7 +69,18 @@ class AudioManager {
         this.bgm.pause();
       } catch {}
     }
-    // Wichtig: KEIN this.bgm.play() hier!
+    [
+      this.bgm,
+      this.sfxBubble,
+      this.sfxHurt,
+      this.sfxCoin,
+      this.sfxPoison,
+      this.sfxFinSlap,
+    ].forEach((a) => {
+      try {
+        a.muted = this.muted;
+      } catch {}
+    });
   }
 
   /**
@@ -149,7 +165,19 @@ class AudioManager {
       a.play();
     } catch (_) {}
   }
-}
 
+  /**
+   * Play the fin slap sound (single instance, respects mute flag).
+   * Safe-guards autoplay errors via try/catch.
+   * @returns {void}
+   */
+  playFinSlap() {
+    if (this.muted) return;
+    try {
+      this.sfxFinSlap.currentTime = 0;
+      this.sfxFinSlap.play();
+    } catch {}
+  }
+}
 /** Global shared audio manager instance. @type {AudioManager} */
 window.audio = window.audio || new AudioManager();
