@@ -263,7 +263,7 @@ h1 {
   justify-content: center;
   gap: 12px;
   opacity: 1;
-  pointer-events: auto; 
+  pointer-events: auto;
 }
 
 #game-container.started + #controls {
@@ -408,14 +408,13 @@ h1 {
   #controls {
     position: fixed;
     right: 12px;
-    bottom: 12px;
+    top: 12px;
     z-index: 10000;
     width: auto;
     max-width: none;
     margin: 0;
     padding: 6px 8px;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(3px);
     border-radius: 999px;
   }
@@ -435,7 +434,7 @@ h1 {
   }
 }
 
-@media (orientation: landscape) and (max-width: 900px) {
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
   #touch-controls {
     position: fixed;
     left: 0;
@@ -459,27 +458,28 @@ h1 {
     align-items: center;
     gap: 12px;
   }
+
   .tc-dpad {
     display: grid;
-    grid-template-columns: repeat(3, 56px);
-    grid-template-rows: repeat(3, 56px);
-    gap: 2px;
+    grid-template-columns: repeat(3, 64px);
+    grid-template-rows: repeat(3, 64px);
+    gap: 6px;
   }
+
   .tc-btn {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
     border-radius: 12px;
     border: 0;
     background: rgba(0, 0, 0, 0.4);
     color: #fff;
-    font-size: 20px;
+    font-size: 22px;
     display: grid;
     place-items: center;
     pointer-events: auto;
     user-select: none;
     touch-action: none;
   }
-
   .tc-btn:active {
     transform: scale(0.96);
   }
@@ -502,11 +502,31 @@ h1 {
   }
 
   .tc-btn.tc-a,
-  .tc-btn.tc-b {
-    width: 64px;
-    height: 64px;
+  .tc-btn.tc-b,
+  .tc-btn.tc-f {
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     font-weight: 700;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-width: 700px) {
+  .tc-dpad {
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 4px;
+  }
+  .tc-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+  .tc-btn.tc-a,
+  .tc-btn.tc-b,
+  .tc-btn.tc-f {
+    width: 64px;
+    height: 64px;
   }
 }
 
@@ -527,6 +547,7 @@ h1 {
   #controls {
     display: none !important;
   }
+  
   #rotate-overlay img {
     width: 70vw;
     max-width: 420px;

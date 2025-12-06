@@ -29,11 +29,6 @@ function init() {
 
   syncAudioButton();
 }
-function syncAudioButton() {
-  const btn = document.querySelector("[data-audio-toggle]");
-  if (!btn) return;
-  updateAudioBtn(btn, getMuted());
-}
 
 window.bgLoader = {
   pending: 0,
@@ -53,7 +48,6 @@ window.bgLoader = {
         document.getElementById("game-container")?.classList.add("started");
       }
     };
-    // Falls aus dem Cache schon fertig:
     if (img.complete && img.naturalWidth > 0) {
       done();
       return;
@@ -221,12 +215,10 @@ function initInfoModal() {
   const backdrop = modal.querySelector(".modal-backdrop");
   const content = modal.querySelector(".modal-content");
 
-  /** Opens the info modal. */
   const openModal = () => {
     modal.classList.add("show");
     modal.setAttribute("aria-hidden", "false");
   };
-  /** Closes the info modal. */
   const closeModal = () => {
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
@@ -265,11 +257,8 @@ window.addEventListener("keyup", (e) => {
 
 /**
  * Updates the "rotate device" overlay based on device/orientation.
- * - Shows overlay on mobile portrait, hides otherwise.
- * - Stops/starts BGM accordingly (respects persisted mute flag).
- *
- * Side effects: toggles aria-hidden and calls audio methods inside try/catch.
- * @returns {void}
+ * - Mobile Portrait: Overlay anzeigen, BGM stoppen.
+ * - Sonst: Overlay ausblenden, BGM (wenn nicht gemutet) starten.
  */
 function updateRotateOverlay() {
   const overlay = document.getElementById("rotate-overlay");
@@ -279,9 +268,9 @@ function updateRotateOverlay() {
     "(hover: none) and (pointer: coarse)"
   ).matches;
   const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-
   const show = isMobile && isPortrait;
   overlay.setAttribute("aria-hidden", String(!show));
+  overlay.classList.toggle("show", show);
 
   try {
     if (show) window.audio?.stopBgm?.();
@@ -347,9 +336,40 @@ function tcBindHold(el, key) {
  * @returns {void}
  */
 function tcReleaseAll() {
-  ["UP", "DOWN", "LEFT", "RIGHT", "SPACE", "D"].forEach((k) =>
+  ["UP", "DOWN", "LEFT", "RIGHT", "SPACE", "D", "F"].forEach((k) =>
     tcSetKey(k, false)
   );
+}
+
+/**
+ * Checks whether the "rotate device" overlay (#rotate-overlay) is currently visible.
+ *
+ * This makes the visibility check robust across different browsers and
+ * implementations (ARIA vs. CSS-only toggling).
+ *
+ * @returns {boolean} True if the rotate overlay is effectively visible on screen; otherwise false.
+ *
+ * @example
+ * if (tcOverlayVisible()) {
+ *   // Hide touch controls while the rotate overlay is shown
+ *   document.getElementById('touch-controls').hidden = true;
+ * }
+ */
+function tcOverlayVisible() {
+  const el = document.getElementById("rotate-overlay");
+  if (!el) return false;
+  if (el.getAttribute("aria-hidden") === "false") return true;
+  try {
+    const cs = window.getComputedStyle(el);
+    return (
+      cs &&
+      cs.display !== "none" &&
+      cs.visibility !== "hidden" &&
+      cs.opacity !== "0"
+    );
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -358,17 +378,15 @@ function tcReleaseAll() {
  * @returns {boolean}
  */
 function tcShouldShow() {
-  const mql = window.matchMedia(
-    "(orientation: landscape) and (hover: none) and (pointer: coarse)"
-  );
-  const started =
-    document.getElementById("game-container")?.classList.contains("started") ||
-    document.getElementById("start-overlay")?.classList.contains("hide");
-  const rotateShown = document
-    .getElementById("rotate-overlay")
-    ?.classList.contains("show");
-  return mql.matches && started && !rotateShown;
-}
+    const mobileLike = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    const landscape  = window.matchMedia("(orientation: landscape)").matches;
+  
+    const started =
+      document.getElementById("game-container")?.classList.contains("started") ||
+      document.getElementById("start-overlay")?.classList.contains("hide");
+  
+    return mobileLike && landscape && started && !tcOverlayVisible();
+  }
 
 /**
  * Applies the current visibility to the #touch-controls element.
@@ -385,18 +403,17 @@ function tcUpdate() {
  * @returns {void}
  */
 function tcWireObservers() {
-  const startedEl = document.getElementById("game-container");
-  const mql = window.matchMedia(
-    "(orientation: landscape) and (hover: none) and (pointer: coarse)"
-  );
-  mql.addEventListener("change", tcUpdate);
-  window.addEventListener("resize", tcUpdate);
-  if (startedEl)
-    new MutationObserver(tcUpdate).observe(startedEl, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-}
+    const startedEl = document.getElementById("game-container");
+    window.addEventListener("resize", tcUpdate);
+    window.addEventListener("orientationchange", () => setTimeout(tcUpdate, 50));
+    if (startedEl) {
+      new MutationObserver(tcUpdate).observe(startedEl, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+  }
+  
 
 /**
  * Wires global releases so keys don't get stuck.
@@ -405,14 +422,14 @@ function tcWireObservers() {
  * @returns {void}
  */
 function tcWireGlobalReleases(tc) {
-  window.addEventListener("pointerup", tcReleaseAll);
-  window.addEventListener("pointercancel", tcReleaseAll);
-  window.addEventListener("blur", tcReleaseAll);
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) tcReleaseAll();
-  });
-  tc.addEventListener("contextmenu", (e) => e.preventDefault());
-}
+    window.addEventListener("pointerup", tcReleaseAll);
+    window.addEventListener("pointercancel", tcReleaseAll);
+    window.addEventListener("blur", tcReleaseAll);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) tcReleaseAll();
+    });
+    tc.addEventListener("contextmenu", (e) => e.preventDefault());
+  }
 
 /**
  * Binds hold behavior to all buttons inside the touch-controls container.
@@ -420,10 +437,8 @@ function tcWireGlobalReleases(tc) {
  * @returns {void}
  */
 function tcWireButtons(tc) {
-  tc.querySelectorAll("[data-key]").forEach((btn) =>
-    tcBindHold(btn, btn.dataset.key)
-  );
-}
+    tc.querySelectorAll("[data-key]").forEach((btn) => tcBindHold(btn, btn.dataset.key));
+  }
 
 /**
  * Initializes the mobile touch controls (wiring, observers, visibility).
@@ -431,13 +446,15 @@ function tcWireButtons(tc) {
  * @returns {void}
  */
 function initTouchControls() {
-  const tc = document.getElementById("touch-controls");
-  if (!tc) return;
-  tcWireButtons(tc);
-  tcWireObservers();
-  tcWireGlobalReleases(tc);
-  tcUpdate();
-}
+    const tc = document.getElementById("touch-controls");
+    if (!tc) return;
+    tcWireButtons(tc);
+    tcWireObservers();
+    tcWireGlobalReleases(tc);
+    tcUpdate();
+  }
+
+  document.addEventListener("DOMContentLoaded", initTouchControls);
 
 /**
  * Restarts the game in-place without reloading the page or showing the start screen.
