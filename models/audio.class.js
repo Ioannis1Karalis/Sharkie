@@ -91,7 +91,7 @@ class AudioManager {
     try {
       this.bgm.currentTime = 0;
       const p = this.bgm.play();
-      if (p && p.catch) p.catch(() => {}); // Autoplay-Fehler stillschweigend schlucken
+      if (p && p.catch) p.catch(() => {});
     } catch {}
   }
 
