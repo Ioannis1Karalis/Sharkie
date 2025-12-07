@@ -459,6 +459,10 @@ h1 {
     gap: 12px;
   }
 
+  .tc-right img{
+    width: 35px;
+  }
+
   .tc-dpad {
     display: grid;
     grid-template-columns: repeat(3, 64px);
@@ -547,7 +551,7 @@ h1 {
   #controls {
     display: none !important;
   }
-  
+
   #rotate-overlay img {
     width: 70vw;
     max-width: 420px;
